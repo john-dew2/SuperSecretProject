@@ -13,7 +13,8 @@
     #if 1 then different_files and remove_log_files
     #if 2 then different_files and !remove_log_files
 
-def parseCommandLine(arguments)
+def parseCommandLine(arguments):
+    return true
     
 
     
