@@ -4,7 +4,9 @@ import sys
 
 def main():
 	#Verify Tools and Parse Command Line
-    args=sys.argv
+    args = sys.argv
+    argList = args.split()
+    print(argList)
     from Options import parseCommandLine
     
     #Input System
