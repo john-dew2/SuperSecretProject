@@ -27,19 +27,19 @@ class Options:
 
     #prints the current state of the options
     def printOptions(self):
-        print("INPUT_PATH: ", self.INPUT_PATH, "\n")
-        print("OUTPUT_PATH: ", self.OUTPUT_PATH, "\n")
-        print("PARALLEL_CORES_USED: ", self.PARALLEL_CORES_USED, "\n")
-        print("FULL_PROCESS: ", self.FULL_PROCESS, "\n")
-        print("CHOP_ONLY: ", self.CHOP_ONLY, "\n")
-        print("CHOP_AND_REMOVE: ", self.CHOP_AND_REMOVE, "\n")
-        print("TRADITIONAL_FORMAT: ", self.TRADITIONAL_FORMAT, "\n")
-        print("DIFFERENT_FILES: ", self.DIFFERENT_FILES, "\n")
-        print("REMOVE_LOG_FILES: ", self.REMOVE_LOG_FILES, "\n")
+        print(f"INPUT_PATH: {self.INPUT_PATH}")
+        print(f"OUTPUT_PATH: {self.OUTPUT_PATH}")
+        print(f"PARALLEL_CORES_USED: {self.PARALLEL_CORES_USED}")
+        print(f"FULL_PROCESS: {self.FULL_PROCESS}")
+        print(f"CHOP_ONLY: {self.CHOP_ONLY}")
+        print(f"CHOP_AND_REMOVE: {self.CHOP_AND_REMOVE}")
+        print(f"TRADITIONAL_FORMAT: {self.TRADITIONAL_FORMAT}")
+        print(f"DIFFERENT_FILES: {self.DIFFERENT_FILES}")
+        print(f"REMOVE_LOG_FILES: {self.REMOVE_LOG_FILES}")
     
     #prints when there's an error with inputs pertaining to -p -m or -c    
     def paramErr(self, argType, option, lower, upper):
-        print("[Error] ", argType, " expects values between ", lower, "-", upper, " inclusive, your input: ", option)
+        print(f"[Error] {argType} expects values between {lower}-{upper} inclusive; your input: {option}")
        
     #takes in the arguments from the command line and updates each command's repsective option
     def handleOption(self, argType, option):

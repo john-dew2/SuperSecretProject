@@ -1,3 +1,7 @@
+from rdkit import Chem
+from pathlib import Path
+from Molecule import Molecule
+
 #takes the contents of a file and puts it in a string for processing
 def fileToSting(file):
     retString = ""
@@ -13,7 +17,7 @@ def fileToSting(file):
    
 #converts the contetns of a file to their respective molecule
 def convertToRDkit(contents, extension):
-    #kekulize = false
+    Chem.doKekule = False
     
     if (extension == ".fasta"):
         return Chem.MolFromFASTA(contents) 
@@ -35,24 +39,23 @@ def convertToRDkit(contents, extension):
     return None
     
 def acquireMolecules(files):
+    data = []
+
     #parse through each file to convert to RDKit molecule        
     for current_file in files:
+        current_file = Path(current_file)
         #get the contents of the file and the file type (extension) for processing
         file_contents = fileToSting(current_file)
         extension = current_file.suffix
-            
-        #get the molecule
-        try:
-            molecule = convertToRDkit(file_contents, extension)
-        except:
-            #print(f"RDKit failed to read {}" current_file.name)
                 
-        #if the molecule didnt process let the user know
-        if (molecule == None):
-            print("[Error] RDKit was unable to convert", current_file.name,  "to a RDKit object")
-        #otherwise add it to our dataset and update the filenames we have
-        else:
-            molObject = Molecule(molecule, current_file.name)
-            data.append(molObject)
-            
+    #get the molecule
+    try:
+        molecule = convertToRDkit(file_contents, extension)
+    except:
+        print(f"[ERROR] RDKit failed to read {current_file.name}")
+                    
+    #otherwise add it to our dataset and update the filenames we have
+    else:
+        molObject = Molecule(molecule, current_file.name)
+        data.append(molObject)       
     return data
