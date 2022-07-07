@@ -50,7 +50,7 @@ class Options:
             
         if (argType == "-p"):
             option = int(option)
-            
+            #throw error
             if ((option > 16) or (option < 0)):
                 self.paramErr(argType, option, 0, 16)
             
@@ -58,6 +58,7 @@ class Options:
             
         if (argType == "-m"):
             option = int(option)
+            #throw error
             if ((option > 2) or (option < 0)):
                 self.paramErr(argType, option, 0, 2)
                 
@@ -70,6 +71,7 @@ class Options:
                 
         if (argType == "-c"):
             option = int(option)
+            #throw error
             if ((option > 2) or (option < 0)):
                 self.paramErr(argType, option, 0, 2)
             

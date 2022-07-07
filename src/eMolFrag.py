@@ -1,6 +1,7 @@
 
 import sys
 import os
+from Molecule import Molecule
 from Options import Options
 from pathlib import Path
 from rdkit import Chem
@@ -57,7 +58,8 @@ def handleInput(initializer):
             extension = filename[filename.find("."):]
 
             #RDKit can use mol2, mol, smiles, smarts, FASTA, HELM, PDB, PNG
-            if ((extension != ".mol2")and(extension != ".smi")):
+            formats = [".fasta",".yaml",".mol2",".mol",".pbd",".sma",".smi",".tpl"]
+            if ((extension in formats) == False):
                 print("[Error] emolFrag 2.0 only accpets .mol2 or .smi formats")
             else:
                 original_filenames.append(filename)
@@ -77,17 +79,17 @@ def handleInput(initializer):
                 print("[Error] RDKit was unable to convert", original_filenames[files.index(current_file)],  "to a RDKit object")
             #otherwise add it to our dataset and update the filenames we have
             else:
-                data.append(molecule)
-                filenames.append(original_filenames[files.index(current_file)])
-                
+                molObject = Molecule(molecule, original_filenames[files.index(current_file)])
+                data.append(molObject)
+    print(len(data))            
     return data
 
 def main():
     dataset = []
+    
 	#Verify Tools and Parse Command Line
     args = sys.argv
     initializer = Options()
-    
     initializer.parseCommandLine(args)
     
     #Input System
