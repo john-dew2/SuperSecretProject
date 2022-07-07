@@ -1,5 +1,7 @@
 #That molecule class will contain the rdkit object, the name of the file it came from, as well as a list of 'equal other fragments'.
 from rdkit import Chem
+from rdkit.Chem import AllChem
+from rdkit import DataStructs
 
 class Molecule:
     def __init__(self, rdkit_object, file_name):
@@ -28,9 +30,9 @@ class Molecule:
         fp2 = AllChem.GetMorganFingerprintAsBitVect(mol2.rdkitObject, 3, nBits=2048)
         tc = round(DataStructs.TanimotoSimilarity(fp1,fp2),3)
         
-        if (tc != 1)
-            return false
-        return true
+        if (tc != 1):
+            return False
+        return True
     
     def __str__(self):
         numAtoms = self.rdkitObject.GetNumAtoms()

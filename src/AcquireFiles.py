@@ -18,7 +18,7 @@ def acquireFiles(initializer):
     if not(extension in formats):
       print(f"[Error] emolFrag 2.0 only accpets fasta, yaml, mol2, mol, pbd, sma, smi, tpl files")
     else:
-      files.append(initializer.INPUT_PATH + "/" + current_file.name)
+      files.append(Path(initializer.INPUT_PATH + "/" + current_file.name))
           
   return files
   

@@ -39,18 +39,17 @@ def convertToRDkit(contents, extension):
     return None
     
 def acquireMolecules(files):
-    data = []
+  data = []
 
-    #parse through each file to convert to RDKit molecule        
-    for current_file in files:
-        current_file = Path(current_file)
-        #get the contents of the file and the file type (extension) for processing
-        file_contents = fileToSting(current_file)
-        extension = current_file.suffix
+  #parse through each file to convert to RDKit molecule        
+  for current_file in files:
+    #get the contents of the file and the file type (extension) for processing
+    file_contents = fileToSting(current_file)
+    extension = current_file.suffix
                 
     #get the molecule
     try:
-        molecule = convertToRDkit(file_contents, extension)
+      molecule = convertToRDkit(file_contents, extension)
     except:
         print(f"[ERROR] RDKit failed to read {current_file.name}")
                     
@@ -58,4 +57,4 @@ def acquireMolecules(files):
     else:
         molObject = Molecule(molecule, current_file.name)
         data.append(molObject)       
-    return data
+  return data
