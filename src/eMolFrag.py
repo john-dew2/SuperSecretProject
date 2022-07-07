@@ -1,13 +1,12 @@
 
 import sys
-
+from Options import Options
 
 def main():
 	#Verify Tools and Parse Command Line
     args = sys.argv
-
-    from Options import parseCommandLine
-    parseCommandLine(args)
+    initializer = Options()
+    initializer.parseCommandLine(args)
     
     #Input System
     
