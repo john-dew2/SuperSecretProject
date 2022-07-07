@@ -14,15 +14,16 @@
     #if 2 then different_files and !remove_log_files
     
 class Options:
-    INPUT_PATH = ""
-    OUTPUT_PATH = ""
-    PARALLEL_CORES_USED = 0
-    FULL_PROCESS = False
-    CHOP_ONLY = False
-    CHOP_AND_REMOVE = False
-    TRADITIONAL_FORMAT  = False
-    DIFFERENT_FILES  = False
-    REMOVE_LOG_FILES  = False
+    def __init__(self):
+        self.INPUT_PATH = ""
+        self.OUTPUT_PATH = ""
+        self.PARALLEL_CORES_USED = 0
+        self.FULL_PROCESS = False
+        self.CHOP_ONLY = False
+        self.CHOP_AND_REMOVE = False
+        #self.TRADITIONAL_FORMAT  = False
+        self.DIFFERENT_FILES  = False
+        self.REMOVE_LOG_FILES  = False
 
     #prints the current state of the options
     def printOptions(self):

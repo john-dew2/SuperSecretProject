@@ -1,13 +1,9 @@
 #That molecule class will contain the rdkit object, the name of the file it came from, as well as a list of 'equal other fragments'.
 class Molecule:
-    rdkit = None
-    filename = ""
-    equalFragments = []
-    
     def __init__(self, rdkit_object, file_name):
         self.rdkit = rdkit_object
         self.filename = file_name
-        
+        self.equalFragments = []
     def getRDKitObject(self):
         return self.rdkit
     
@@ -20,5 +16,5 @@ class Molecule:
     def setEqualFragments(self, listOfFragments):
         self.equalFragments = listOfFragments
         
-    def toString():
-        print(filename)
+    def toString(self):
+        print(self.filename)
