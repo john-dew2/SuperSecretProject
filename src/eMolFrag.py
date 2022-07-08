@@ -4,8 +4,8 @@ from Molecule import Molecule
 from Options import Options
 from pathlib import Path
 from rdkit import Chem
-from AcquireFiles import acquireFiles
-from AcquireMolecules import acquireMolecules
+import AcquireFiles
+import AcquireMolecules
 
 def main():
     dataset = []
@@ -16,8 +16,8 @@ def main():
     initializer.parseCommandLine(args)
     
     #Input System
-    files = acquireFiles(initializer)
-    dataset = acquireMolecules(files)
+    files = AcquireFiles.acquireFiles(initializer)
+    dataset = AcquireMolecules.acquireMolecules(files)
     
     #Process
     

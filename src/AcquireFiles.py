@@ -1,7 +1,9 @@
 
 from Options import Options
+from pathlib import Path
 
 def acquireFiles(initializer):
+
     folderPath = Path(initializer.INPUT_PATH)
 
     if not folderPath.exists():

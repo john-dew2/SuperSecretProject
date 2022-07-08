@@ -1,3 +1,7 @@
+from rdkit import Chem
+from pathlib import Path
+from Molecule import Molecule
+
 import constants
 
 #takes the contents of a file and puts it in a string for processing
@@ -12,7 +16,7 @@ def fileToString(file):
    
 #converts the contetns of a file to their respective molecule
 def convertToRDkit(contents, extension):
-    #kekulize = false
+    Chem.doKekule = False
     
     if (extension == constants.FASTA_FORMAT_EXT):
         return Chem.MolFromFASTA(contents) 
