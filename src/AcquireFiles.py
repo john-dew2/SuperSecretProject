@@ -2,24 +2,30 @@
 from Options import Options
 
 def acquireFiles(initializer):
-    files = []
-    filenames = []
     folderPath = Path(initializer.INPUT_PATH)
 
-    if folderPath.exists():
+    if not folderPath.exists():
+        print(f'Input path {initializer.INPUT_PATH} does not exist.')
         return
     
-    #initialize two lists; one with the full path of a file and one with the file names
+    # initialize two lists; one with the full path of a file and one with the file names
+    files = []
+    filenames = []
+    bad_files = []
     for file in folderPath.iterdir():
-        #file extension will help filter bad data
+    
+        # file extension will help filter bad data
         extension = file.suffix
 
-        #RDKit can use mol2, mol, smiles, smarts, FASTA, HELM, PDB, PNG
-        formats = [".fasta",".yaml",".mol2",".mol",".pbd",".sma",".smi",".tpl"]
-        if ((extension in formats) == False):
-            print("[Error] emolFrag 2.0 only accpets .fasta,.yaml,.mol2,.mol,.pbd,.sma,.smi,.tpl")
+        if extension not in constants.ACCEPTED_FORMATS:
+            bad_files.append(file)
+
         else:
             filenames.append(file.name)
             files.append(Path(initializer.INPUT_PATH + "/" + file.name))
+            
+    if bad_files:
+        print(f'[Error] emolFrag 2.0 only accepts the following formats {', '.join(constants.ACCEPTED_FORMATS)}')
+        print(f'The following files will be ignored:\n\t{"\n\t".join(bad_files)}')
             
     return files
