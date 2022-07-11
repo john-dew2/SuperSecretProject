@@ -1,10 +1,6 @@
-from itertools import filterfalse, tee
-   
 from rdkit import Chem
-import fragmenter
+import Fragmenter
 import constants
-
-
 
 #
 # Does the bond consist of a carbon (C) and dummy created by BRICS (*)?
@@ -14,7 +10,7 @@ import constants
 def isCarbonDummyBond(rdkit_atom_begin, rdkit_atom_end):
     syms = [rdkit_atom_begin.GetSymbol(), rdkit_atom_end.GetSymbol()]
 
-    return constants.CARBON_ATOM_STR in syms and
+    return constants.CARBON_ATOM_STR in syms and \
            constants.DUMMY_ATOM_STR in syms
 
 #
@@ -22,7 +18,7 @@ def isCarbonDummyBond(rdkit_atom_begin, rdkit_atom_end):
 #
 def isC2C2DoubleBond(rdkit_bond):
 
-   if rdkit_bond != Chem.rdchem.BondType.DOUBLE return False
+   if rdkit_bond != Chem.rdchem.BondType.DOUBLE: return False
    
    return isCarbonDummyBond(rdkit_bond.GetBeginAtom(), \
                             rdkit_bond.GetEndAtom())
@@ -52,7 +48,7 @@ def partitionFragments(rdkit_frags):
 # @output: A reconnected list of rdkit fragment objects
 #
 def reconnect_db(rdkit_parent, rdkit_db_fragments):
-    
+    pass
   
 #
 # The goal is to reconnect C.2 = C.2 double bonds that are broken by BRICS
@@ -67,7 +63,7 @@ def reconnect(parent_rdkit_mol, rdkit_fragment_list):
         return frags_db
 
     if len(frags_db) % 2 == 1:
-        utilities.emitError(f'Odd number ({len(frags_db)}) of double-bonded fragments found.'")
+        utilities.emitError(f'Odd number ({len(frags_db)}) of double-bonded fragments found.')
 
     # Perform reconnection
     reconnected = reconnect_db(parent_rdkit_mol, frags_db)

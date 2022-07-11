@@ -1,7 +1,7 @@
 from rdkit import Chem
 import utilities
 import constants
-import DoubleBondRecoonector
+import DoubleBondReconnector
 import Fragmenter
 import FragmentPartitioner    
 
@@ -10,19 +10,18 @@ import FragmentPartitioner
 #     (1) Fragment with BRICS
 #     (2) Reconnect C.2 = C.2 double bonds broken by BRICS
 #     (3) Identify bricks and linkers
-#     (4) Reconnect adjacent linkers that share a summy bond
-#     (5) Create internal representation of the fragments for downstream processing
+#     (4) Reconnect adjacent linkers that share a dummy bond
 #
-# @input: A Molecule object (which contains an rdkit molecule object)
-# @output: list of (local) Bricks and Linker objects
+# @input: An rdkit molecule with all hydrogens removed
+# @output: list of (rdkit) brick and linker objects
 #
-def chop(molecule):
+def chop(stripped_rdkit_mol):
 
     #
     # (1) Fragment
     #
     try: 
-        rdkit_fragments = fragmenter.fragment(molecule.GetRDKitObject())
+        rdkit_fragments = fragmenter.fragment(stripped_rdkit_mol)
 
     except RDKitError:
         return []
@@ -31,7 +30,7 @@ def chop(molecule):
     # (2) Reconnect C.2 = C.2 Double Bonds
     #
     fragCountBefore = len(rdkit_fragments)
-    rdkit_fragments = DoubleBondRecoonector.reconnect(molecule.GetRDKitObject(),
+    rdkit_fragments = DoubleBondReconnector.reconnect(molecule.GetRDKitObject(),
                                                       rdkit_fragments)
 
     if len(rdkit_fragments) != fragCountBefore:
@@ -46,14 +45,23 @@ def chop(molecule):
     # (4) 'Adjacent' linkers will be combined into single linkers
     #
     linkers = LinkerCombiner.combineLinkers(molecule.GetRDKitObject(), bricks, linkers)
-
-    #
-    # (5) Create 'local' molecule representations
-    #
-    localBricks = [Brick(fragment, parent) for fragment in bricks]
-    localLinkers = [Linker(fragment, parent) for fragment in linkers]
     
-    return localBricks + localLinkers
+    return bricks, linkers
+
+#
+# Create and add local Brick/Linker objects to the database; report results
+#
+def processFragments(level, bricks, linkers, parent):
+
+    results = database.addAll([Brick(fragment, parent) for fragment in bricks])
+    
+    utilities.emit(level, f'Added {result.count(True)} TC-unique bricks; \
+                   {result.count(False)} were TC-redundant')
+
+    results = database.addAll([Linker(fragment, parent) for fragment in linkers])
+    
+    utilities.emit(level, f'Added {result.count(True)} TC-unique linkers; \
+                   {result.count(False)} were TC-redundant')
 
 #
 # Chop many molecules
@@ -61,16 +69,19 @@ def chop(molecule):
 # @input: list of Molecule objects (containing rdkit objects)
 # @output: MoleculeDatabase containing all fragments
 #
-def chopall(molList, level):
+def chopall(level, molList):
 
     database = MoleculeDatabase()
-    for mol in molList:
 
-        emit(level, f'Processing molecule{mol.GetFileName()}')
+    for parent_mol in molList:
 
-        result = database.addAll(chop(mol))
-        
-        emit(level, f'Added {result.count(True)} TC-unique fragments; \
-             {result.count(False)} were TC-redundant')
+        utilities.emit(level, f'Processing molecule{parent_mol.GetFileName()}')
+
+        # Remove all hydrogens from our molecule for simplicity
+        stripped_rdkit = parent_mol.GetRDKitObject().RemoveAllHs()
+
+        # Actually chop and store the molecular fragments in the database
+        bricks, linkers = chop(stripped_rdkit)
+        processFragments(bricks, linkers, parent_mol)      
 
     return database

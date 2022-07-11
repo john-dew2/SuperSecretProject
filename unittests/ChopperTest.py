@@ -24,7 +24,7 @@ def runIsBrickTests():
 # Unit test initiation functionality
 #
 #
-def runtest(func):
+def run(func):
 
     try:
        func()
@@ -34,20 +34,16 @@ def runtest(func):
        return False
 
 def runtest(test_name, test_func, successful, failed):
-
-    if runtest(test_func):
-        successful.append(test_name)
-    else:
-        failed.append(test_name)
+    (successful if run(test_func) else failed).append(test_name)
     
 def runtests(printlevel):
 
-    utilities.emit(printlevel, f'Executing {__name__} unit tests.')
+    utilities.emit(printlevel, f'Executing {__file__} unit tests.')
 
     #
     # Define all tests as a Dictionary: {str-name, <function-to-execute>}
     #
-    tests = {"isBrick", runIsBrickTests; \
+    tests = { "isBrick" : runIsBrickTests \
             }
 
     #
@@ -55,7 +51,7 @@ def runtests(printlevel):
     #
     successful = []
     failed = []
-    for (test_name, test_func) in tests:
+    for (test_name, test_func) in tests.items():
         runtest(test_name, test_func, successful, failed)
 
     # 
@@ -69,4 +65,4 @@ def runtests(printlevel):
             utilities.emit(printlevel+1, f'Failed {test}.')
 
 if __name__ == "__main__":
-    runtests()
+    runtests(0)
