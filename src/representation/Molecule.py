@@ -26,13 +26,12 @@ class Molecule:
         self.equalFragments = listOfFragments
         
     def __eq__(self, molecule):
+        # Acquire 
         fp1 = AllChem.GetMorganFingerprintAsBitVect(self.rdkitObject, 3, nBits=2048)
         fp2 = AllChem.GetMorganFingerprintAsBitVect(mol2.rdkitObject, 3, nBits=2048)
         tc = round(DataStructs.TanimotoSimilarity(fp1,fp2),3)
         
-        if (tc != 1):
-            return False
-        return True
+        return tc == 1
     
     def __str__(self):
         numAtoms = self.rdkitObject.GetNumAtoms()

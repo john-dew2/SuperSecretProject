@@ -1,10 +1,11 @@
+from rdkit.Chem import BRICS
 from rdkit import Chem
 
 def BRICS_Fragment(molecule):
 
     fragmented_mol = Chem.FragmentOnBRICSBonds(molecule)
 
-    return Chem.GetMolFrags(fragemented_mol, asMols = True, sanitizeFrags = False)
+    return Chem.BRICS.GetMolFrags(fragemented_mol, asMols = True, sanitizeFrags = False)
 
 #
 # @input:  Molecule object

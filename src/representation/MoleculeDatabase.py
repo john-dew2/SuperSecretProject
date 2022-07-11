@@ -2,6 +2,7 @@ from rdkit import DataStructs # For TC Computations
 
 from Molecule import Molecule
 import constants
+import tc
 
 #
 # This class will simulate an equivalence class of molecules
@@ -12,16 +13,16 @@ class MoleculeDatabase(Molecule):
 
     def __init__(self):
         self.database = {}
-        self.TC = constants.DEFAULT_TC_UNIQUENESS
+        self.TC_THRESH = constants.DEFAULT_TC_UNIQUENESS
 
-    def __init__(self, tc):
+    def __init__(self, given_tc):
         self.database = {}
         
-        if tc < 0 or abs(tc) > 1:
-            print(f'Tanimoto coefficient constant {tc} is not in allowable range 0 <= tc <= 1.0')
+        if given_tc < 0 or given_tc > 1:
+            print(f'Tanimoto coefficient constant {given_tc} is not in allowable range 0 <= tc <= 1.0')
             raise RuntimeError
 
-        self.TC = tc
+        self.TC_THRESH = given_tc
 
     #
     # @input: 2 Molecule objects
@@ -29,13 +30,8 @@ class MoleculeDatabase(Molecule):
     #          (we use math.isclose to assess floating-point-based equivalent)
     #
     def _TCEquiv(mol1, mol2):
-
-        fp_1 = Chem.RDKFingerprint(mol1.GetRDKitObject())
-        fp_2 = Chem.RDKFingerprint(mol2.GetRDKitObject())
-        
-        tc = DataStructs.FingerprintSimilarity(fp_1, f_2)        
                                                                  # 4-decimal place equality 
-        return math.isclose(tc, constants.DEFAULT_TC_UNIQUENESS, rel_tol = 1e-5)
+        return math.isclose(tc.TC(mol1, mol2), self.TC_THRESH, rel_tol = 1e-5)
 
     #
     # Add one Molecule object to the database
