@@ -103,7 +103,7 @@ def AnalyzeCleaveLinkerLinkerBonds(level, bonds, mol):
         return cleaveBonds, []
 
     if len(bonds) + 1 != len(fragments):
-        emitError(level, f'Unepxected number of fragments when cleaved; expected {len(bonds) + 1}, found {len{fragments}}')
+        emitError(level, f'Unepxected number of fragments when cleaved; expected {len(bonds) + 1}, found {len(fragments)}')
 
     #
     # Identify subsequences of linkers; remove cleave bonds if a subsequence is found

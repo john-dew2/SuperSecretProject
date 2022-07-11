@@ -1,7 +1,7 @@
 from rdkit import Chem
 import utilities
 import constants
-import DoubleBondRecoonector
+import DoubleBondReconnector
 import Fragmenter
 import FragmentPartitioner    
 
@@ -55,13 +55,13 @@ def processFragments(level, bricks, linkers, parent):
 
     results = database.addAll([Brick(fragment, parent) for fragment in bricks])
     
-    emit(level, f'Added {result.count(True)} TC-unique bricks; \
-         {result.count(False)} were TC-redundant')
+    utilities.emit(level, f'Added {result.count(True)} TC-unique bricks; \
+                   {result.count(False)} were TC-redundant')
 
     results = database.addAll([Linker(fragment, parent) for fragment in linkers])
     
-    emit(level, f'Added {result.count(True)} TC-unique linkers; \
-         {result.count(False)} were TC-redundant')
+    utilities.emit(level, f'Added {result.count(True)} TC-unique linkers; \
+                   {result.count(False)} were TC-redundant')
 
 #
 # Chop many molecules
@@ -75,13 +75,13 @@ def chopall(level, molList):
 
     for parent_mol in molList:
 
-        emit(level, f'Processing molecule{parent_mol.GetFileName()}')
+        utilities.emit(level, f'Processing molecule{parent_mol.GetFileName()}')
 
         # Remove all hydrogens from our molecule for simplicity
         stripped_rdkit = parent_mol.GetRDKitObject().RemoveAllHs()
 
         # Actually chop and store the molecular fragments in the database
-        bricks, linkers = chop(stripped_rdkit))
+        bricks, linkers = chop(stripped_rdkit)
         processFragments(bricks, linkers, parent_mol)      
 
     return database
