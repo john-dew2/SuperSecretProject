@@ -16,8 +16,8 @@ def runIsBrickTests():
     runisBrick("./data/1098067-c2-c2-double-bond/b-CHEMBL1098067.mol2-002.sdf", True)
     
     runisBrick("./data/1098067-c2-c2-double-bond/1-CHEMBL1098067.mol2-000.sdf", False)
-    runisBrick("./data/1098067-c2-c2-double-bond/1-CHEMBL1098067.mol2-000.sdf", False)
-    runisBrick("./data/1098067-c2-c2-double-bond/1-CHEMBL1098067.mol2-000.sdf", False)
+    runisBrick("./data/1098067-c2-c2-double-bond/1-CHEMBL1098067.mol2-001.sdf", False)
+    runisBrick("./data/1098067-c2-c2-double-bond/1-CHEMBL1098067.mol2-002.sdf", False)
 
 #
 #
