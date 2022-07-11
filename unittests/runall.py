@@ -15,8 +15,7 @@ def runtests():
     MoleculeDatabaseTest.runtests(1)
 
     ChopperTest.runtests()
-    
-    
+
         
 if __name__ == "__main__":
     runtests()
