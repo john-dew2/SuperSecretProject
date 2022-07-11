@@ -1,8 +1,12 @@
 
-from Options import Options
+from input import Options
 from pathlib import Path
+from utilities import constants
 
-def acquireFiles(initializer):
+#
+# Given the input path conatining molecules, make a list of all the file paths
+#
+def acquireMoleculeFiles(initializer):
 
     folderPath = Path(initializer.INPUT_PATH)
 
@@ -14,20 +18,34 @@ def acquireFiles(initializer):
     files = []
     filenames = []
     bad_files = []
-    for file in folderPath.iterdir():
+    for current_file in folderPath.iterdir():
     
         # file extension will help filter bad data
-        extension = file.suffix
+        extension = current_file.suffix
 
         if extension not in constants.ACCEPTED_FORMATS:
-            bad_files.append(file)
+            bad_files.append(current_file)
 
         else:
-            filenames.append(file.name)
-            files.append(Path(initializer.INPUT_PATH + "/" + file.name))
+            filenames.append(current_file.name)
+            files.append(Path(initializer.INPUT_PATH + "/" + current_file.name))
             
     if bad_files:
-        print(f'[Error] emolFrag 2.0 only accepts the following formats {', '.join(constants.ACCEPTED_FORMATS)}')
-        print(f'The following files will be ignored:\n\t{"\n\t".join(bad_files)}')
+        #print()
+        print("bad file")
+        #print(f"[Error] emolFrag 2.0 only accepts the following formats {', '.join(constants.ACCEPTED_FORMATS)}")
+        #print(f"The following files will be ignored:\n\t{'  '.join(bad_files)}")
             
     return files
+
+#
+# Given a configuration file, return the file path
+#
+def acquireConfigurationFile(file):
+    filePath = Path(file)
+
+    if not filePath.exists():
+        print(f'Input path {file} does not exist.')
+        return
+    
+    return filePath
