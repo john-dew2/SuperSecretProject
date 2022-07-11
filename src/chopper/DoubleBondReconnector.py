@@ -1,10 +1,6 @@
-from itertools import filterfalse, tee
-   
 from rdkit import Chem
 import fragmenter
 import constants
-
-
 
 #
 # Does the bond consist of a carbon (C) and dummy created by BRICS (*)?

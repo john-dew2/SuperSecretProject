@@ -43,12 +43,8 @@ def partition(rdkit_fragments):
 
     bricks = []
     linkers = []
+
     for rdkit_frag in rdkit_fragments:
-
-        if isBrick(rdkit_frag):
-            bricks.append(rdkit_frag)
-
-        else:
-            linkers.append(rdkit_frag)
-            
+       (bricks if isBrick(rdkit_frag) else linkers).append(rdkit_frag)
+ 
     return bricks, linkers
