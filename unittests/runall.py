@@ -7,9 +7,10 @@
 
 import MoleculeDatabaseTest
 import ChopperTest
+import utilities
 
 def runtests():
-    emit(0, f'Executing eMolFrag v2.0 unit tests.')
+    utilities.emit(0, f'Executing eMolFrag v2.0 unit tests.')
     MoleculeDatabaseTest.runtests(1)
 
     

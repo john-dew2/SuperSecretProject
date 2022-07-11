@@ -1,9 +1,13 @@
+import sys
+sys.path.insert(0, 'C:\Users\tchen\Documents\GitHub\eMolFrag-2\src\utilities\constants.py')
+sys.path.insert(0, 'C:\Users\tchen\Documents\GitHub\eMolFrag-2\src\utilities\tc.py')
+
 import math 
 from rdkit import DataStructs # For TC Computations
 
 from Molecule import Molecule
-import constants
-from utilities import tc
+#import constants
+#import tc
 
 
 #
