@@ -1,11 +1,12 @@
 
 import sys
-from Molecule import Molecule
-from Options import Options
+from representation import Molecule
 from pathlib import Path
 from rdkit import Chem
-import AcquireFiles
-import AcquireMolecules
+from input import AcquireFiles
+from input import AcquireMolecules
+from input import Configuration
+from input.Options import Options
 
 def main():
     dataset = []
@@ -13,12 +14,11 @@ def main():
 	#Verify Tools and Parse Command Line
     args = sys.argv
     initializer = Options()
-    initializer.parseCommandLine(args)
+    Configuration.readConfigurationInput(initializer, args)
     
     #Input System
-    files = AcquireFiles.acquireFiles(initializer)
+    files = AcquireFiles.acquireMoleculeFiles(initializer)
     dataset = AcquireMolecules.acquireMolecules(files)
-    
     #Process
     
     #Post-Process
