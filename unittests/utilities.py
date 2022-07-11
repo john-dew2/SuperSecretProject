@@ -49,8 +49,9 @@ def convertToRDkit(contents, extension):
 # Given a path object, return the corresponding RDKit molecule object
 # This simplified functionality is for testing only
 #
-def getRDKitMolecule(path):
-    return convertToRDkit(fileToString(path))
+def getRDKitMolecule(path, extension):
+    content = fileToString(path)
+    return convertToRDkit(content, extension)
   
 #
 #

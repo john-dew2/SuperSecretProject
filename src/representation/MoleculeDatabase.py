@@ -1,8 +1,10 @@
+import math 
 from rdkit import DataStructs # For TC Computations
 
 from Molecule import Molecule
 import constants
-import tc
+from utilities import tc
+
 
 #
 # This class will simulate an equivalence class of molecules
@@ -29,7 +31,7 @@ class MoleculeDatabase(Molecule):
     # @output: True if the molecules are TC-equivalent; False otherwise
     #          (we use math.isclose to assess floating-point-based equivalent)
     #
-    def _TCEquiv(mol1, mol2):
+    def _TCEquiv(self, mol1, mol2):
                                                                  # 4-decimal place equality 
         return math.isclose(tc.TC(mol1, mol2), self.TC_THRESH, rel_tol = 1e-5)
 
@@ -40,7 +42,7 @@ class MoleculeDatabase(Molecule):
     #
     def add(self, molecule):
 
-        tc_equiv = filter(lambda db_mol : _TCEquiv(molecule, db_mol), self.database.keys())
+        tc_equiv = filter(lambda db_mol : _TCEquiv(self, molecule, db_mol), self.database.keys())
 
         if len(tc_equiv) > 1:
             print(f'Internal MoleculeDatabase error; {len(tc_equiv)}-TC equivalent molecules')            

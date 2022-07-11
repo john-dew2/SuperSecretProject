@@ -9,13 +9,9 @@ import MoleculeDatabaseTest
 import ChopperTest
 
 def runtests():
-
     emit(0, f'Executing eMolFrag v2.0 unit tests.')
-    
     MoleculeDatabaseTest.runtests(1)
 
-    ChopperTest.runtests()
-
-        
+    
 if __name__ == "__main__":
     runtests()
