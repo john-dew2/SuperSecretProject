@@ -11,13 +11,15 @@ def fileToString(file):
     contents = ""
     with open(file) as f:
         contents = f.read()
-    f.close()
         
+    f.close()
+    
     return contents
    
 #converts the contetns of a file to their respective molecule
 def convertToRDkit(contents, extension):
     #kekulize = false
+    #Chem.doKekule = False 
     
     if (extension == ".fasta"):
         return Chem.MolFromFASTA(contents)
