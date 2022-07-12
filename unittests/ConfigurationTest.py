@@ -1,9 +1,9 @@
 import sys
 from pathlib import Path
-from eMolFragTEMP.unittests import utilities
+from eMolFrag-2.unittests import utilities
 
 #from ..src.input import Configuration, Options
-from eMolFragTEMP.src.input import Configuration, Options
+from eMolFrag-2.src.input import Configuration, Options
 
 
 def runReadCommandLine(arguments, expec_result):
@@ -11,7 +11,7 @@ def runReadCommandLine(arguments, expec_result):
     assert Configuration.readCommandLine(initializer, arguments) == expec_result
 
 def runReadCommandLineTests():
-    runReadCommandLine("!python -m eMolFragTEMP.src.eMolFrag -i /content/eMolFragTEMP/test/mol2-test -o output/ -p 16 -c 1".split(" "), True)
+    runReadCommandLine("!python -m eMolFrag-2.src.eMolFrag -i /content/eMolFrag-2/test/mol2-test -o output/ -p 16 -c 1".split(" "), True)
     runReadCommandLine(None, False)
     
     
@@ -19,29 +19,29 @@ def runReadConfigurationFile(config_file, expec_result):
     assert Configuration.readConfigurationFile(config_file) == expec_result
 
 def runReadConfigurationFileTests():
-    runReadConfigurationFile("/content/eMolFragTEMP/unittests/data/config-files/comment1.txt", ['\n!python', '-m', 'eMolFragTEMP.src.eMolFrag', '-i', '/content/eMolFragTEMP/test/mol2-test', '-o', 'output/', '-p', '16', '-c', '1'])
-    runReadConfigurationFile("/content/eMolFragTEMP/unittests/data/config-files/comment2.txt", ['!python', '-m', 'eMolFragTEMP.src.eMolFrag', '-i', '/content/eMolFragTEMP/test/mol2-test', '-o', 'output/', '-p', '16', '-c', '1', ''])
-    runReadConfigurationFile("/content/eMolFragTEMP/unittests/data/config-files/comment3.txt", ['!python',  '-m', 'eMolFragTEMP.src.eMolFrag', '-i', '/content/eMolFragTEMP/test/mol2-test', '-o', 'output/', '-p', '16', '-c', '1\n\n'])
-    runReadConfigurationFile("/content/eMolFragTEMP/unittests/data/config-files/comment4.txt", [''])
-    runReadConfigurationFile("/content/eMolFragTEMP/unittests/data/config-files/normal1.txt",  ['!python',  '-m', 'eMolFragTEMP.src.eMolFrag', '-i', '/content/eMolFragTEMP/test/mol2-test', '-o', 'output/', '-p', '16', '-c', '1'])
-    runReadConfigurationFile("/content/eMolFragTEMP/unittests/data/config-files/normal2.txt",  ['!python', '-m', 'eMolFragTEMP.src.eMolFrag', '-i', '/content/eMolFragTEMP/test/mol2-test', '-o', 'output/', '-p', '0', '-c', '0'])
+    runReadConfigurationFile("/content/eMolFrag-2/unittests/data/config-files/comment1.txt", ['\n!python', '-m', 'eMolFrag-2.src.eMolFrag', '-i', '/content/eMolFrag-2/test/mol2-test', '-o', 'output/', '-p', '16', '-c', '1'])
+    runReadConfigurationFile("/content/eMolFrag-2/unittests/data/config-files/comment2.txt", ['!python', '-m', 'eMolFrag-2.src.eMolFrag', '-i', '/content/eMolFrag-2/test/mol2-test', '-o', 'output/', '-p', '16', '-c', '1', ''])
+    runReadConfigurationFile("/content/eMolFrag-2/unittests/data/config-files/comment3.txt", ['!python',  '-m', 'eMolFrag-2.src.eMolFrag', '-i', '/content/eMolFrag-2/test/mol2-test', '-o', 'output/', '-p', '16', '-c', '1\n\n'])
+    runReadConfigurationFile("/content/eMolFrag-2/unittests/data/config-files/comment4.txt", [''])
+    runReadConfigurationFile("/content/eMolFrag-2/unittests/data/config-files/normal1.txt",  ['!python',  '-m', 'eMolFrag-2.src.eMolFrag', '-i', '/content/eMolFrag-2/test/mol2-test', '-o', 'output/', '-p', '16', '-c', '1'])
+    runReadConfigurationFile("/content/eMolFrag-2/unittests/data/config-files/normal2.txt",  ['!python', '-m', 'eMolFrag-2.src.eMolFrag', '-i', '/content/eMolFrag-2/test/mol2-test', '-o', 'output/', '-p', '0', '-c', '0'])
 
 def runReadConfigurationInput(arguments, expec_result):
     initializer = Options.Options()
     assert Configuration.readConfigurationInput(initializer, arguments) == expec_result
 
 def runReadConfigurationInputTests():
-    runReadConfigurationInput("!python -m eMolFragTEMP.src.eMolFrag -i /content/eMolFragTEMP/test/mol2-test -o output/ -p 16 -c 1".split(" "), True)
-    runReadConfigurationInput("!python -m eMolFragTEMP.src.eMolFrag -o output/ -p 16 -c 1".split(" "), False)
-    runReadConfigurationInput("!python -m eMolFragTEMP.src.eMolFrag -i /content/eMolFragTEMP/test/mol2-test -p 16 -c 1".split(" "), False)
-    runReadConfigurationInput("!python -m eMolFragTEMP.src.eMolFrag -i /content/eMolFragTEMP/test/mol2-test -o output/".split(" "), True)
+    runReadConfigurationInput("!python -m eMolFrag-2.src.eMolFrag -i /content/eMolFrag-2/test/mol2-test -o output/ -p 16 -c 1".split(" "), True)
+    runReadConfigurationInput("!python -m eMolFrag-2.src.eMolFrag -o output/ -p 16 -c 1".split(" "), False)
+    runReadConfigurationInput("!python -m eMolFrag-2.src.eMolFrag -i /content/eMolFrag-2/test/mol2-test -p 16 -c 1".split(" "), False)
+    runReadConfigurationInput("!python -m eMolFrag-2.src.eMolFrag -i /content/eMolFrag-2/test/mol2-test -o output/".split(" "), True)
     runReadConfigurationInput("!python".split(" "), False)
-    runReadConfigurationInput("-m /content/eMolFragTEMP/unittests/data/config-files/comment1.txt".split(" "), True)
-    runReadConfigurationInput("-m /content/eMolFragTEMP/unittests/data/config-files/comment2.txt".split(" "), True)
-    runReadConfigurationInput("-m /content/eMolFragTEMP/unittests/data/config-files/comment3.txt".split(" "), True)
-    runReadConfigurationInput("-m /content/eMolFragTEMP/unittests/data/config-files/comment4.txt".split(" "), False)
-    runReadConfigurationInput("-m /content/eMolFragTEMP/unittests/data/config-files/normal1.txt".split(" "), True)
-    runReadConfigurationInput("-m /content/eMolFragTEMP/unittests/data/config-files/normal2.txt".split(" "), True)
+    runReadConfigurationInput("-m /content/eMolFrag-2/unittests/data/config-files/comment1.txt".split(" "), True)
+    runReadConfigurationInput("-m /content/eMolFrag-2/unittests/data/config-files/comment2.txt".split(" "), True)
+    runReadConfigurationInput("-m /content/eMolFrag-2/unittests/data/config-files/comment3.txt".split(" "), True)
+    runReadConfigurationInput("-m /content/eMolFrag-2/unittests/data/config-files/comment4.txt".split(" "), False)
+    runReadConfigurationInput("-m /content/eMolFrag-2/unittests/data/config-files/normal1.txt".split(" "), True)
+    runReadConfigurationInput("-m /content/eMolFrag-2/unittests/data/config-files/normal2.txt".split(" "), True)
 #
 #
 # Unit test initiation functionality

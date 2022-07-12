@@ -1,7 +1,7 @@
 
-from eMolFragTEMP.src.input import Options
+from eMolFrag-2.src.input import Options
 from pathlib import Path
-from eMolFragTEMP.src.utilities import constants
+from eMolFrag-2.src.utilities import constants
 
 #
 # Given the input path conatining molecules, make a list of all the file paths

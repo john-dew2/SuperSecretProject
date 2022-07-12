@@ -1,7 +1,7 @@
 from rdkit import Chem
 from pathlib import Path
-from eMolFragTEMP.src.representation import Molecule
-from eMolFragTEMP.src.utilities import constants
+from eMolFrag-2.src.representation import Molecule
+from eMolFrag-2.src.utilities import constants
 
 #takes the contents of a file and puts it in a string for processing
 def fileToString(file):

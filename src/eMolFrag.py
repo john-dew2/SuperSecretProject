@@ -1,10 +1,9 @@
 
 import sys
-from eMolFragTEMP.src.representation import Molecule
+from eMolFrag-2.src.representation import Molecule
 from pathlib import Path
 from rdkit import Chem
-from eMolFragTEMP.src.input import AcquireFiles, AcquireMolecules, Configuration, Options
-#from eMolFragTEMP.src.input.Options import Options
+from eMolFrag-2.src.input import AcquireFiles, AcquireMolecules, Configuration, Options
 
 def main():
     dataset = []

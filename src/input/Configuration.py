@@ -1,5 +1,5 @@
 from pathlib import Path
-from eMolFragTEMP.src.input import AcquireFiles
+from eMolFrag-2.src.input import AcquireFiles
 
 #
 # Acquires and reads a configuration file and returns the command line arguments nested in the file
