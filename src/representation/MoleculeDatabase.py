@@ -1,14 +1,11 @@
-import sys
-sys.path.insert(0, 'C:\Users\tchen\Documents\GitHub\eMolFrag-2\src\utilities\constants.py')
-sys.path.insert(0, 'C:\Users\tchen\Documents\GitHub\eMolFrag-2\src\utilities\tc.py')
-
 import math 
 from rdkit import DataStructs # For TC Computations
 
-from Molecule import Molecule
-#import constants
-#import tc
+import sys
+from eMolFrag2.src.utilities import constants 
+from eMolFrag2.src.utilities import tc
 
+from eMolFrag2.src.representation.Molecule import Molecule
 
 #
 # This class will simulate an equivalence class of molecules
@@ -37,6 +34,7 @@ class MoleculeDatabase(Molecule):
     #
     def _TCEquiv(self, mol1, mol2):
                                                                  # 4-decimal place equality 
+
         return math.isclose(tc.TC(mol1, mol2), self.TC_THRESH, rel_tol = 1e-5)
 
     #
