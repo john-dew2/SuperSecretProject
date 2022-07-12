@@ -1,0 +1,3 @@
+#Comment
+
+!python -m eMolFrag2.src.eMolFrag -i /content/eMolFrag2/test/mol2-test -o output/ -p 16 -c 1
