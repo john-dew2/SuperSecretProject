@@ -10,7 +10,7 @@ def run_TCEquiv(pathForMol1, pathForMol2, expec_result):
 
     mol1 = utilities.getRDKitMolecule(pathForMol1,pathForMol1.suffix)
     mol2 = utilities.getRDKitMolecule(pathForMol2,pathForMol2.suffix)
-    md = MoleculeDatabase.MoleculeDatabase(given_tc = 0.5)
+    md = MoleculeDatabase.MoleculeDatabase(1.0)
 
     assert md._TCEquiv(mol1, mol2) == expec_result
 

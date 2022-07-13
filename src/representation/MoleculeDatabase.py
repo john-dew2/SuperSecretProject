@@ -14,7 +14,11 @@ from eMolFrag2.src.representation.Molecule import Molecule
 #
 class MoleculeDatabase(Molecule):
 
-    def __init__(self, given_tc = constants.DEFAULT_TC_UNIQUENESS):
+    def __init__(self):
+        self.database = {}
+        self.TC_THRESH = constants.DEFAULT_TC_UNIQUENESS
+
+    def __init__(self, given_tc):
         self.database = {}
         
         if given_tc < 0 or given_tc > 1:
@@ -29,13 +33,9 @@ class MoleculeDatabase(Molecule):
     #          (we use math.isclose to assess floating-point-based equivalent)
     #
     def _TCEquiv(self, mol1, mol2):
-        tanimoto = tc.TC(mol1, mol2)  
+                                                                 # 4-decimal place equality 
 
-        # >   
-        if (tanimoto > self.TC_THRESH):
-          return True
-        # =                                         # 4-decimal place equality 
-        return math.isclose(tanimoto, self.TC_THRESH, rel_tol = 1e-5)
+        return math.isclose(tc.TC(mol1, mol2), self.TC_THRESH, rel_tol = 1e-5)
 
     #
     # Add one Molecule object to the database
