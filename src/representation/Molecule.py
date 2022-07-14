@@ -14,7 +14,7 @@ class Molecule:
         return self.parent
         
     def getRDKitObject(self):
-        return self.rdkit
+        return self.rdkitObject
     
     def getFileName(self):
         return self.filename
@@ -28,7 +28,7 @@ class Molecule:
     def __eq__(self, molecule):
         # Acquire 
         fp1 = AllChem.GetMorganFingerprintAsBitVect(self.rdkitObject, 3, nBits=2048)
-        fp2 = AllChem.GetMorganFingerprintAsBitVect(mol2.rdkitObject, 3, nBits=2048)
+        fp2 = AllChem.GetMorganFingerprintAsBitVect(molecule.rdkitObject, 3, nBits=2048)
         tc = round(DataStructs.TanimotoSimilarity(fp1,fp2),3)
         
         return tc == 1

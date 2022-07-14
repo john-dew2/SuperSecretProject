@@ -18,7 +18,7 @@ def fileToString(file):
    
 #converts the contetns of a file to their respective molecule
 def convertToRDkit(contents, extension):
-    #kekulize = false
+    #kekulize = False
     #Chem.doKekule = False 
     
     if (extension == ".fasta"):
@@ -28,12 +28,12 @@ def convertToRDkit(contents, extension):
         return Chem.MolFromHELM(contents)
 
     if (extension == ".mol2"):
-        return Chem.MolFromMol2Block(contents)
+        return Chem.MolFromMol2Block(contents, False)
 
     if (extension == ".mol"):
         return Chem.MolFromMolBlock(contents)
 
-    if (extension == ".pbd"):
+    if (extension == ".pdb"):
         return Chem.MolFromPDBBlock(contents)
 
     if (extension == ".sma"):

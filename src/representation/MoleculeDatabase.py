@@ -29,33 +29,41 @@ class MoleculeDatabase(Molecule):
     #          (we use math.isclose to assess floating-point-based equivalent)
     #
     def _TCEquiv(self, mol1, mol2):
+        
         tanimoto = tc.TC(mol1, mol2)  
-
         # >   
         if (tanimoto > self.TC_THRESH):
           return True
         # =                                         # 4-decimal place equality 
         return math.isclose(tanimoto, self.TC_THRESH, rel_tol = 1e-5)
 
+    
     #
     # Add one Molecule object to the database
     #
     # @output: if the given molecule is unique, return True (False if it is TC-redudant
     #
     def add(self, molecule):
-
-        tc_equiv = filter(lambda db_mol : _TCEquiv(self, molecule, db_mol), self.database.keys())
+      
+        tc_equiv = list(filter(lambda db_mol : self._TCEquiv(molecule, db_mol), self.database.keys()))
+        #print("Length of tc_equiv:", len(tc_equiv))
 
         if len(tc_equiv) > 1:
             print(f'Internal MoleculeDatabase error; {len(tc_equiv)}-TC equivalent molecules')            
-        
+
         # Empty ; we have a unique fragment; a new entry has { molecule, [] }
         if not tc_equiv:
             self.database[molecule] = []
+            #print("\nAdded unique", molecule)
+            #print("database contains:\n", self.database)
+            
             return True
             
         # Not a TC-unique fragment: { tc_equiv, [..., molecule] }
         self.database[tc_equiv[0]].append(molecule)
+        #print("\nAdd similar", molecule)
+        #print("database:\n", self.database)
+        
         return False
     
     #
