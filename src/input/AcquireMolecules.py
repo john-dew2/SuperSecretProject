@@ -2,6 +2,7 @@ from rdkit import Chem
 from pathlib import Path
 from eMolFrag2.src.representation import Molecule
 from eMolFrag2.src.utilities import constants
+from eMolFrag2.unittests import utilities
 
 #takes the contents of a file and puts it in a string for processing
 def fileToString(file):
@@ -16,7 +17,7 @@ def fileToString(file):
 #converts the contetns of a file to their respective molecule
 def convertToRDkit(contents, extension):
     Chem.doKekule = False
-    
+
     if (extension == constants.FASTA_FORMAT_EXT):
         return Chem.MolFromFASTA(contents) 
 
@@ -24,7 +25,7 @@ def convertToRDkit(contents, extension):
         return Chem.MolFromHELM(contents) 
 
     if (extension == constants.MOL2_FORMAT_EXT):
-        return Chem.MolFromMol2Block(contents)
+        return Chem.MolFromMol2Block(contents)#, False)
 
     if (extension == constants.MOL_FORMAT_EXT):
         return Chem.MolFromMolBlock(contents)
@@ -56,13 +57,10 @@ def acquireMolecules(files):
       try:
           molecule = convertToRDkit(file_contents, extension)
       except:
-          print(f"RDKit failed to read {current_file.name}")
-              
-      #if the molecule didnt process let the user know
-      #if (molecule == None):
-      #    print(f"[Error] RDKit failed to convert {current_file.name} to a RDKit object.")
+          #print(f"RDKit failed to read {current_file.name}")
+          utilities.emit(0, f"RDKit failed to read {current_file.name}")
 
-      #otherwise add it to our dataset and update the filenames we have
+      #add it to our dataset and update the filenames we have
       else:
           molObject = Molecule.Molecule(molecule, current_file.name)
           data.append(molObject)

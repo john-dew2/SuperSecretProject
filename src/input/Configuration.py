@@ -1,5 +1,6 @@
 from pathlib import Path
 from eMolFrag2.src.input import AcquireFiles
+from eMolFrag2.unittests import utilities
 
 #
 # Acquires and reads a configuration file and returns the command line arguments nested in the file
@@ -12,7 +13,12 @@ def readConfigurationFile(config_file):
     #read the lines
     with open(path) as f:
         lines = f.readlines()
-        
+
+    if (len(lines) <= 0):
+        #print(f"file {path.name} is empty")
+        utilities.emit(0, f"file {path.name} is empty")
+        return []
+    
     #concatenate the contents and ignore comments
     position = 0
     for line in lines:
@@ -30,8 +36,9 @@ def readConfigurationFile(config_file):
 #
 def readCommandLine(initializer, arguments):
     if (arguments == None):
-      print(f"Arguments were empty")
-      return False
+      #print(f"Arguments were empty")
+      utilities.emit(0, f"Arguments were empty")
+      return None
 
     argTypes = ["-i","-o","-p","-m","-c"]
     
@@ -40,7 +47,7 @@ def readCommandLine(initializer, arguments):
         if (arguments[i] in argTypes):
             initializer.setOption(arguments[i], arguments[i + 1])
 
-    return True
+    return initializer
             
 #
 # Reads user input and begins configuration
@@ -51,8 +58,9 @@ def readConfigurationInput(initializer, arguments):
 
     #if length is 1, then no arguments wer eprovided
     if (len(arg) < 2):
-        print(f"No arguments we're provided")
-        return False
+        #print(f"No arguments we're provided")
+        utilities.emit(0, f"No arguments we're provided")
+        return None
 
     #if length is 2, then only one argument was provided, meaning the only argument is a file
     if (len(arg) == 2):
@@ -60,9 +68,10 @@ def readConfigurationInput(initializer, arguments):
 
     #if there is no "-i" or "-o", throw an error
     if not(all(x in arg for x in requiredTypes)):
-      print(f"Every command must iclude '-i' and '-o'")
-      return False
+      #print(f"Every command must iclude '-i' and '-o'")
+      utilities.emit(0, f"Every command must iclude '-i' and '-o'")
+      return None
 
     #otherwise read the command line arguments provided
     readCommandLine(initializer, arg)
-    return True
+    return initializer

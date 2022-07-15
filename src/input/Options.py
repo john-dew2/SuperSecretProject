@@ -1,5 +1,5 @@
 #Options.py
-
+from eMolFrag2.unittests import utilities
 
 #input_path
 #output_path
@@ -21,7 +21,7 @@ class Options:
         self.FULL_PROCESS = False
         self.CHOP_ONLY = False
         self.CHOP_AND_REMOVE = False
-        #self.TRADITIONAL_FORMAT  = False
+        self.TRADITIONAL_FORMAT  = False
         self.DIFFERENT_FILES  = False
         self.REMOVE_LOG_FILES  = False
 
@@ -43,19 +43,25 @@ class Options:
     # Prints when there's an error with inputs pertaining to -p -m or -c    
     #
     def paramErr(self, argType, option, lower, upper):
-        print(f"[Error] {argType} expects values between {lower}-{upper} inclusive; your input: {option}")
+        utilities.emit(0, f"[Error] {argType} expects values between {lower}-{upper} inclusive; your input: {option}")
     
     #
     # Given an options preference, function sets an option to its correct value
     #
     def setOption(self, argType, option):
+    
+        argTypes = ["-i","-o","-p","-m","-c"]
+        if option in argType:
+            utilities.emit(0,f"Can't have a {option} argument follow a {argType} argument")
+            return
+    
         if (argType == "-i"):   
             self.INPUT_PATH = option
             
-        if (argType == "-o"):
+        elif (argType == "-o"):
             self.OUTPUT_PATH = option
             
-        if (argType == "-p"):
+        elif (argType == "-p"):
             option = int(option)
             #throw error
             if ((option > 16) or (option < 0)):
@@ -76,7 +82,7 @@ class Options:
         #    if (option == 2):
         #        self.CHOP_AND_REMOVE = True
                 
-        if (argType == "-c"):
+        elif (argType == "-c"):
             option = int(option)
             #throw error
             if ((option > 2) or (option < 0)):
@@ -90,4 +96,6 @@ class Options:
             if (option == 2):
                 self.DIFFERENT_FILES = True
                 self.REMOVE_LOG_FILES = False
-              
+        
+        else:
+            utilities.emit(0, f"[Error] {argType} does not exist")

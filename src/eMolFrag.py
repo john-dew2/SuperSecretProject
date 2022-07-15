@@ -11,12 +11,12 @@ def main():
 	#Verify Tools and Parse Command Line
     args = sys.argv
     initializer = Options.Options()
-    Configuration.readConfigurationInput(initializer, args)
+    initializer = Configuration.readConfigurationInput(initializer, args)
     
     #Input System
     files = AcquireFiles.acquireMoleculeFiles(initializer)
     dataset = AcquireMolecules.acquireMolecules(files)
-    print(len(dataset))
+    print("Amount of Molecules:", len(dataset))
     #Process
     
     #Post-Process
