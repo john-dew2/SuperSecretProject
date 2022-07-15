@@ -4,7 +4,7 @@ from eMolFrag2.unittests import utilities
 from eMolFrag2.src.input import AcquireMolecules, AcquireFiles, Configuration, Options
 
 usr_dir = Path.cwd()
-dataPath = usr_dir.joinpath("eMolFragTEMP/unittests/data/db-files")
+dataPath = usr_dir.joinpath("eMolFrag2/unittests/data/db-files")
 mol2 = dataPath.joinpath("mol2")
 smi = dataPath.joinpath("smi")
 sdf = dataPath.joinpath("sdf")
@@ -16,12 +16,12 @@ def runAcquireMoleculesTests():
     testPaths = [mol2, smi, pdb, mol]
     #Tests if mol2 and smi are taken
     for filePath in testPaths:
-        arguments = f"!python -m eMolFragTEMP.src.eMolFrag -i {filePath} -o output/"
+        arguments = f"!python -m eMolFrag2.src.eMolFrag -i {filePath} -o output/"
         files = getListofFiles(arguments)
         runAcquireMolecules(files, len(files))
         
     #Will recognize the files as bad
-    runAcquireMolecules(getListofFiles(f"!python -m eMolFragTEMP.src.eMolFrag -i {sdf} -o output/"), 0)
+    runAcquireMolecules(getListofFiles(f"!python -m eMolFrag2.src.eMolFrag -i {sdf} -o output/"), 0)
 
 def getListofFiles(args):
     initializer = Options.Options()

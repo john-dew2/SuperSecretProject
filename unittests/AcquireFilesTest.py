@@ -4,22 +4,22 @@ from eMolFrag2.unittests import utilities
 from eMolFrag2.src.input import AcquireFiles, Configuration, Options
 
 usr_dir = Path.cwd()
-dataPath = usr_dir.joinpath("eMolFragTEMP/unittests/data/db-files")
+dataPath = usr_dir.joinpath("eMolFrag2/unittests/data/db-files")
 mol2 = dataPath.joinpath("mol2")
 smi = dataPath.joinpath("smi")
 sdf = dataPath.joinpath("sdf")
-config = usr_dir.joinpath("/content/eMolFragTEMP/unittests/data/config-files")
+config = usr_dir.joinpath("/content/eMolFrag2/unittests/data/config-files")
 
 def runAcquireMoleculeFilesTests():
     
     testPaths = [mol2, smi]
     #Tests if mol2 and smi are taken
     for filePath in testPaths:
-        runAcquireMoleculeFiles(f"-m eMolFragTEMP.src.eMolFrag -i {filePath} -o output/".split(" "), 5)
+        runAcquireMoleculeFiles(f"-m eMolFrag2.src.eMolFrag -i {filePath} -o output/".split(" "), 5)
     #Will recognize the files as bad
-    runAcquireMoleculeFiles(f"-m eMolFragTEMP.src.eMolFrag -i {sdf} -o output/".split(" "), 0)
+    runAcquireMoleculeFiles(f"-m eMolFrag2.src.eMolFrag -i {sdf} -o output/".split(" "), 0)
     #File does not exist
-    runAcquireMoleculeFiles(f"-m eMolFragTEMP.src.eMolFrag -i directory/doesnt/exist -o output/".split(" "), 0)
+    runAcquireMoleculeFiles(f"-m eMolFrag2.src.eMolFrag -i directory/doesnt/exist -o output/".split(" "), 0)
         
 def runAcquireMoleculeFiles(arguments, expec):
     initializer = Options.Options()
