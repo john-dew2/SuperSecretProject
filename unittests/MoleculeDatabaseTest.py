@@ -30,14 +30,11 @@ def run_TCEquivTests():
 
     # Test similar pair antibiotics 
     # set 1
-    mol1 = cwd.joinpath("similarPairMols/1/DB00452.mol2")
-    mol2 = cwd.joinpath("similarPairMols/1/DB01421.mol2") 
-    run_TCEquiv(mol1, mol2, True)    # kekulize / sanitise problem 
+    mol1 = cwd.joinpath("similarPairSMI/1/DB00452.smi")
+    mol2 = cwd.joinpath("similarPairSMI/1/DB01421.smi") 
+    run_TCEquiv(mol1, mol2, True) 
 
     # set 2 
-    # kekulize / sanitise problem
-    #mol3 = cwd.joinpath("similarPairMols/2/DB01137.mol2")
-    #mol4 = cwd.joinpath("similarPairMols/2/DB01165.mol2")
     mol3 = cwd.joinpath("similarPairSMI/2/DB01137.smi")
     mol4 = cwd.joinpath("similarPairSMI/2/DB01165.smi")
     run_TCEquiv(mol3, mol4, True)
@@ -49,13 +46,9 @@ def run_TCEquivTests():
     run_TCEquiv(mol2, mol4, False) 
 
     # set 3 
-    # kekulize / sanitise problem
-    #mol5 = cwd.joinpath("similarPairMols/3/DB12447.mol2")
-    #mol6 = cwd.joinpath("similarPairMols/3/DB16219.mol2")
     mol5 = cwd.joinpath("similarPairSMI/3/DB12447.smi")
     mol6 = cwd.joinpath("similarPairSMI/3/DB16219.smi")
-    #run_TCEquiv(mol5, mol6, True)     
-
+    run_TCEquiv(mol5, mol6, True)     
 
     # Test tc unique molecules (tc < 1.0)
     uniqueMol1 = cwd.joinpath("uniqueMol(SMI)/DB00415.smi")
@@ -92,8 +85,8 @@ def run_addTests():
     md = MoleculeDatabase.MoleculeDatabase(given_tc = 1.0)
 
     # Molecules with tc = 1.0
-    mol1 = cwd.joinpath("similarPairMols/1/DB00452.mol2")
-    mol2 = cwd.joinpath("similarPairMols/1/DB01421.mol2")
+    mol1 = cwd.joinpath("similarPairSMI/3/DB12447.smi")
+    mol2 = cwd.joinpath("similarPairSMI/3/DB16219.smi")
 
     run_add(md, mol1, True)
     run_add(md, mol1, False)
@@ -248,7 +241,12 @@ def run_GetAllMoleculesTests():
 
     moleculesPath.clear()
     moleculesPath.extend([mol1, mol2, mol3, mol4, mol5, mol6])
-    #run_GetAllMolecules(moleculesPath, 6)
+    run_GetAllMolecules(moleculesPath, 6)
+
+    # Test 3: adding 11 molecules at once 
+    moleculesPath.extend([uniqueMol1, uniqueMol2, uniqueMol3, uniqueMol4, uniqueMol5])
+    run_GetAllMolecules(moleculesPath, 11)
+
 
 def run(func):
     try: 
