@@ -3,6 +3,12 @@ from pathlib import Path
 from eMolFrag2.unittests import utilities
 
 usr_dir = Path.cwd()
+config_files = usr_dir.joinpath("eMolFrag2/unittests/data/config-files")
+
+dataPath = usr_dir.joinpath("eMolFrag2/unittests/data/db-files")
+mol2 = dataPath.joinpath("mol2")
+smi = dataPath.joinpath("smi")
+sdf = dataPath.joinpath("sdf")
 
 def runReadCommandLine(arguments, expec_result):
     initializer = Options.Options()
@@ -27,17 +33,17 @@ def runReadConfigurationFile(config_file, expec_result):
 
 def runReadConfigurationFileTests():
     #Files with a comment
-    runReadConfigurationFile(usr_dir.joinpath("eMolFrag2/unittests/data/config-files/comment1.txt"), ['\n!python', '-m', 'eMolFrag2.src.eMolFrag', '-i', '/content/eMolFrag2/test/mol2-test', '-o', 'output/', '-p', '16', '-c', '1'])
-    runReadConfigurationFile(usr_dir.joinpath("eMolFrag2/unittests/data/config-files/comment2.txt"), ['!python', '-m', 'eMolFrag2.src.eMolFrag', '-i', '/content/eMolFrag2/test/mol2-test', '-o', 'output/', '-p', '16', '-c', '1', ''])
-    runReadConfigurationFile(usr_dir.joinpath("eMolFrag2/unittests/data/config-files/comment3.txt"), ['!python',  '-m', 'eMolFrag2.src.eMolFrag', '-i', '/content/eMolFrag2/test/mol2-test', '-o', 'output/', '-p', '16', '-c', '1\n\n'])
-    runReadConfigurationFile(usr_dir.joinpath("eMolFrag2/unittests/data/config-files/comment4.txt"), [''])
+    runReadConfigurationFile(config_files.joinpath("comment1.txt"), ['\n!python', '-m', 'eMolFrag2.src.eMolFrag', '-i', '/content/eMolFrag2/test/mol2-test', '-o', 'output/', '-p', '16', '-c', '1'])
+    runReadConfigurationFile(config_files.joinpath("comment2.txt"), ['!python', '-m', 'eMolFrag2.src.eMolFrag', '-i', '/content/eMolFrag2/test/mol2-test', '-o', 'output/', '-p', '16', '-c', '1', ''])
+    runReadConfigurationFile(config_files.joinpath("comment3.txt"), ['!python',  '-m', 'eMolFrag2.src.eMolFrag', '-i', '/content/eMolFrag2/test/mol2-test', '-o', 'output/', '-p', '16', '-c', '1\n\n'])
+    runReadConfigurationFile(config_files.joinpath("comment4.txt"), [''])
 
     #Normal Files
-    runReadConfigurationFile(usr_dir.joinpath("eMolFrag2/unittests/data/config-files/normal1.txt"),  ['!python',  '-m', 'eMolFrag2.src.eMolFrag', '-i', '/content/eMolFrag2/test/mol2-test', '-o', 'output/', '-p', '16', '-c', '1'])
-    runReadConfigurationFile(usr_dir.joinpath("eMolFrag2/unittests/data/config-files/normal2.txt"),  ['!python', '-m', 'eMolFrag2.src.eMolFrag', '-i', '/content/eMolFrag2/test/mol2-test', '-o', 'output/', '-p', '0', '-c', '0'])
+    runReadConfigurationFile(config_files.joinpath("normal1.txt"),  ['!python',  '-m', 'eMolFrag2.src.eMolFrag', '-i', '/content/eMolFrag2/test/mol2-test', '-o', 'output/', '-p', '16', '-c', '1'])
+    runReadConfigurationFile(config_files.joinpath("normal2.txt"),  ['!python', '-m', 'eMolFrag2.src.eMolFrag', '-i', '/content/eMolFrag2/test/mol2-test', '-o', 'output/', '-p', '0', '-c', '0'])
 
     #Empty File
-    runReadConfigurationFile(usr_dir.joinpath("eMolFrag2/unittests/data/config-files/empty1.txt"), [])
+    runReadConfigurationFile(config_files.joinpath("empty1.txt"), [])
 
 def runReadConfigurationInput(arguments, expec_result):
     initializer = Options.Options()
@@ -50,25 +56,25 @@ def runReadConfigurationInput(arguments, expec_result):
 
 def runReadConfigurationInputTests():
     #Normal processing
-    runReadConfigurationInput(f"-m eMolFrag2.src.eMolFrag -i {usr_dir.joinpath('eMolFrag2/unittests/data/db-files/mol2')} -o output/ -p 16 -c 1".split(" "), True)
-    runReadConfigurationInput(f"-m eMolFrag2.src.eMolFrag -i {usr_dir.joinpath('eMolFrag2/unittests/data/db-files/smi')} -o output/".split(" "), True)
+    runReadConfigurationInput(f"-m eMolFrag2.src.eMolFrag -i {mol2} -o output/ -p 16 -c 1".split(" "), True)
+    runReadConfigurationInput(f"-m eMolFrag2.src.eMolFrag -i {smi} -o output/".split(" "), True)
     
     #No input or output
     runReadConfigurationInput(f"-m eMolFrag2.src.eMolFrag -o output/ -p 16 -c 1".split(" "), False)
-    runReadConfigurationInput(f"-m eMolFrag2.src.eMolFrag -i {usr_dir.joinpath('eMolFrag2/unittests/data/db-files/smi')} -p 16 -c 1".split(" "), False)
+    runReadConfigurationInput(f"-m eMolFrag2.src.eMolFrag -i {smi} -p 16 -c 1".split(" "), False)
     runReadConfigurationInput(f"-m eMolFrag2.src.eMolFrag -p 16 -c 1".split(" "), False)
     
     #Not enough arguments 
     runReadConfigurationInput(f"!python".split(" "), False)
     
     #Files only
-    runReadConfigurationInput(f"-m {usr_dir.joinpath('eMolFrag2/unittests/data/config-files/comment1.txt')}".split(" "), True)
-    runReadConfigurationInput(f"-m {usr_dir.joinpath('eMolFrag2/unittests/data/config-files/comment2.txt')}".split(" "), True)
-    runReadConfigurationInput(f"-m {usr_dir.joinpath('eMolFrag2/unittests/data/config-files/comment3.txt')}".split(" "), True)
-    runReadConfigurationInput(f"-m {usr_dir.joinpath('eMolFrag2/unittests/data/config-files/comment4.txt')}".split(" "), False)
-    runReadConfigurationInput(f"-m {usr_dir.joinpath('eMolFrag2/unittests/data/config-files/empty1.txt')}".split(" "), False)
-    runReadConfigurationInput(f"-m {usr_dir.joinpath('eMolFrag2/unittests/data/config-files/normal1.txt')}".split(" "), True)
-    runReadConfigurationInput(f"-m {usr_dir.joinpath('eMolFrag2/unittests/data/config-files/normal2.txt')}".split(" "), True)
+    runReadConfigurationInput(f"-m {config_files.joinpath("comment1.txt')}".split(" "), True)
+    runReadConfigurationInput(f"-m {config_files.joinpath("comment2.txt')}".split(" "), True)
+    runReadConfigurationInput(f"-m {config_files.joinpath("comment3.txt')}".split(" "), True)
+    runReadConfigurationInput(f"-m {config_files.joinpath("comment4.txt')}".split(" "), False)
+    runReadConfigurationInput(f"-m {config_files.joinpath("empty1.txt')}".split(" "), False)
+    runReadConfigurationInput(f"-m {config_files.joinpath("normal1.txt')}".split(" "), True)
+    runReadConfigurationInput(f"-m {config_files.joinpath("normal2.txt')}".split(" "), True)
 
 #
 #
