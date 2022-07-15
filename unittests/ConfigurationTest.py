@@ -1,6 +1,7 @@
 import sys
 from pathlib import Path
 from eMolFrag2.unittests import utilities
+from eMolFrag2.src.input import Options, Configuration
 
 usr_dir = Path.cwd()
 config_files = usr_dir.joinpath("eMolFrag2/unittests/data/config-files")
@@ -33,14 +34,14 @@ def runReadConfigurationFile(config_file, expec_result):
 
 def runReadConfigurationFileTests():
     #Files with a comment
-    runReadConfigurationFile(config_files.joinpath("comment1.txt"), ['\n!python', '-m', 'eMolFrag2.src.eMolFrag', '-i', '/content/eMolFrag2/test/mol2-test', '-o', 'output/', '-p', '16', '-c', '1'])
-    runReadConfigurationFile(config_files.joinpath("comment2.txt"), ['!python', '-m', 'eMolFrag2.src.eMolFrag', '-i', '/content/eMolFrag2/test/mol2-test', '-o', 'output/', '-p', '16', '-c', '1', ''])
-    runReadConfigurationFile(config_files.joinpath("comment3.txt"), ['!python',  '-m', 'eMolFrag2.src.eMolFrag', '-i', '/content/eMolFrag2/test/mol2-test', '-o', 'output/', '-p', '16', '-c', '1\n\n'])
+    runReadConfigurationFile(config_files.joinpath("comment1.txt"), ['\n!python', '-m', 'eMolFragTEMP.src.eMolFrag', '-i', '/content/eMolFragTEMP/test/mol2-test', '-o', 'output/', '-p', '16', '-c', '1'])
+    runReadConfigurationFile(config_files.joinpath("comment2.txt"), ['!python', '-m', 'eMolFragTEMP.src.eMolFrag', '-i', '/content/eMolFragTEMP/test/mol2-test', '-o', 'output/', '-p', '16', '-c', '1', ''])
+    runReadConfigurationFile(config_files.joinpath("comment3.txt"), ['!python',  '-m', 'eMolFragTEMP.src.eMolFrag', '-i', '/content/eMolFragTEMP/test/mol2-test', '-o', 'output/', '-p', '16', '-c', '1\n\n'])
     runReadConfigurationFile(config_files.joinpath("comment4.txt"), [''])
 
     #Normal Files
-    runReadConfigurationFile(config_files.joinpath("normal1.txt"),  ['!python',  '-m', 'eMolFrag2.src.eMolFrag', '-i', '/content/eMolFrag2/test/mol2-test', '-o', 'output/', '-p', '16', '-c', '1'])
-    runReadConfigurationFile(config_files.joinpath("normal2.txt"),  ['!python', '-m', 'eMolFrag2.src.eMolFrag', '-i', '/content/eMolFrag2/test/mol2-test', '-o', 'output/', '-p', '0', '-c', '0'])
+    runReadConfigurationFile(config_files.joinpath("normal1.txt"),  ['!python',  '-m', 'eMolFragTEMP.src.eMolFrag', '-i', '/content/eMolFragTEMP/test/mol2-test', '-o', 'output/', '-p', '16', '-c', '1'])
+    runReadConfigurationFile(config_files.joinpath("normal2.txt"),  ['!python', '-m', 'eMolFragTEMP.src.eMolFrag', '-i', '/content/eMolFragTEMP/test/mol2-test', '-o', 'output/', '-p', '0', '-c', '0'])
 
     #Empty File
     runReadConfigurationFile(config_files.joinpath("empty1.txt"), [])
@@ -68,14 +69,14 @@ def runReadConfigurationInputTests():
     runReadConfigurationInput(f"!python".split(" "), False)
     
     #Files only
-    runReadConfigurationInput(f"-m {config_files.joinpath("comment1.txt')}".split(" "), True)
-    runReadConfigurationInput(f"-m {config_files.joinpath("comment2.txt')}".split(" "), True)
-    runReadConfigurationInput(f"-m {config_files.joinpath("comment3.txt')}".split(" "), True)
-    runReadConfigurationInput(f"-m {config_files.joinpath("comment4.txt')}".split(" "), False)
-    runReadConfigurationInput(f"-m {config_files.joinpath("empty1.txt')}".split(" "), False)
-    runReadConfigurationInput(f"-m {config_files.joinpath("normal1.txt')}".split(" "), True)
-    runReadConfigurationInput(f"-m {config_files.joinpath("normal2.txt')}".split(" "), True)
-
+        #Files only
+    runReadConfigurationInput(f"-m {config_files.joinpath('comment1.txt')}".split(" "), True)
+    runReadConfigurationInput(f"-m {config_files.joinpath('comment2.txt')}".split(" "), True)
+    runReadConfigurationInput(f"-m {config_files.joinpath('comment3.txt')}".split(" "), True)
+    runReadConfigurationInput(f"-m {config_files.joinpath('comment4.txt')}".split(" "), False)
+    runReadConfigurationInput(f"-m {config_files.joinpath('empty1.txt')}".split(" "), False)
+    runReadConfigurationInput(f"-m {config_files.joinpath('normal1.txt')}".split(" "), True)
+    runReadConfigurationInput(f"-m {config_files.joinpath('normal2.txt')}".split(" "), True)
 #
 #
 # Unit test initiation functionality
