@@ -75,7 +75,7 @@ class MoleculeDatabase(Molecule):
         return [mol for mol in molecules if self.add(mol)]
     
     def GetUniqueMolecules(self):
-        self.database.keys()
+        return self.database.keys()
 
     #
     # Return all Molecule objects stored

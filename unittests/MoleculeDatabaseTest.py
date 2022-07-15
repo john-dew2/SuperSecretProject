@@ -129,10 +129,10 @@ def run_addAll(md, moleculesPath, length):
 
 def run_addAllTests():
     cwd = Path.cwd().joinpath("eMolFrag2", "unittests", "data")
-    md = MoleculeDatabase.MoleculeDatabase(given_tc = 1.0)
+    md1 = MoleculeDatabase.MoleculeDatabase(given_tc = 1.0)
     moleculesPath = []
 
-    # Test: adding 5 unique molecules 
+    # Test 1: adding 5 unique molecules 
     uniqueMol1 = cwd.joinpath("uniqueMol(SMI)/DB00415.smi")
     uniqueMol2 = cwd.joinpath("uniqueMol(SMI)/DB01208.smi")
     uniqueMol3 = cwd.joinpath("uniqueMol(SMI)/DB04626.smi")
@@ -140,23 +140,115 @@ def run_addAllTests():
     uniqueMol5 = cwd.joinpath("uniqueMol(SMI)/DB13499.smi")
     
     moleculesPath.extend([uniqueMol1, uniqueMol2, uniqueMol3, uniqueMol4, uniqueMol5])
-    run_addAll(md, moleculesPath, 5)
+    run_addAll(md1, moleculesPath, 5)
 
-    # Test: add pairs of similar molecules (tc = 1.0)
+    # Test 2: add pairs of similar molecules (tc = 1.0)
     mol1 = cwd.joinpath("similarPairSMI/1/DB00452.smi")
     mol2 = cwd.joinpath("similarPairSMI/1/DB01421.smi")
     moleculesPath.clear()
     moleculesPath.extend([mol1, mol2])
-    run_addAll(md, moleculesPath, 1)
+    run_addAll(md1, moleculesPath, 1)
 
-    # Test: add 2nd pair of similar molecules
+    # Test 3: add 2nd pair of similar molecules
     mol3 = cwd.joinpath("similarPairSMI/2/DB01137.smi")
     mol4 = cwd.joinpath("similarPairSMI/2/DB01165.smi")
-    moleculesPath.append(mol3)
-    moleculesPath.append(mol4)
-    print("# of path: ", len(moleculesPath))
-    run_addAll(md, moleculesPath, 2)
+    moleculesPath.extend([mol3, mol4])
+    run_addAll(md1, moleculesPath, 1)
 
+    # Test 4: add 3 sets of 2 similar molecules 
+    md2 = MoleculeDatabase.MoleculeDatabase()
+    mol5 = cwd.joinpath("similarPairSMI/3/DB12447.smi")
+    mol6 = cwd.joinpath("similarPairSMI/3/DB16219.smi")
+    moleculesPath.extend([mol5, mol6])
+    run_addAll(md2, moleculesPath, 3)
+
+    # Test 5: create a new database and add all 11 molecules at once 
+    md3 = MoleculeDatabase.MoleculeDatabase()
+    moleculesPath.extend([uniqueMol1, uniqueMol2, uniqueMol3, uniqueMol4, uniqueMol5])
+    run_addAll(md3, moleculesPath, 8)
+
+
+def run_GetUniqueMolecules(moleculesPath, size):
+    database = MoleculeDatabase.MoleculeDatabase(given_tc = 1.0)
+    molecules = []
+    for molPath in moleculesPath: 
+      mol = utilities.getRDKitMolecule(molPath, Path(molPath).suffix)
+      molecules.append(mol)
+
+    database.addAll(molecules)
+  
+    assert len(database.GetUniqueMolecules()) == size
+
+def run_GetUniqueMoleculesTests():
+
+    cwd = Path.cwd().joinpath("eMolFrag2", "unittests", "data")
+    moleculesPath = []
+
+    # Test 1: adding 5 unique molecules 
+    uniqueMol1 = cwd.joinpath("uniqueMol(SMI)/DB00415.smi")
+    uniqueMol2 = cwd.joinpath("uniqueMol(SMI)/DB01208.smi")
+    uniqueMol3 = cwd.joinpath("uniqueMol(SMI)/DB04626.smi")
+    uniqueMol4 = cwd.joinpath("uniqueMol(SMI)/DB11774.smi")
+    uniqueMol5 = cwd.joinpath("uniqueMol(SMI)/DB13499.smi")
+
+    moleculesPath.extend([uniqueMol1, uniqueMol2, uniqueMol3, uniqueMol4, uniqueMol5])
+    run_GetUniqueMolecules(moleculesPath, 5)
+
+    # Test 2: adding 3 sets of 2 similar molecules 
+    mol1 = cwd.joinpath("similarPairSMI/1/DB00452.smi")
+    mol2 = cwd.joinpath("similarPairSMI/1/DB01421.smi")
+    mol3 = cwd.joinpath("similarPairSMI/2/DB01137.smi")
+    mol4 = cwd.joinpath("similarPairSMI/2/DB01165.smi")
+    mol5 = cwd.joinpath("similarPairSMI/3/DB12447.smi")
+    mol6 = cwd.joinpath("similarPairSMI/3/DB16219.smi")
+
+    moleculesPath.clear()
+    moleculesPath.extend([mol1, mol2, mol3, mol4, mol5, mol6])
+    run_GetUniqueMolecules(moleculesPath, 3)
+
+    # Test 3: add 11 molecules at once 
+    moleculesPath.extend([uniqueMol1, uniqueMol2, uniqueMol3, uniqueMol4, uniqueMol5])
+    run_GetUniqueMolecules(moleculesPath, 8)
+
+
+
+def run_GetAllMolecules(moleculesPath, size):
+    database = MoleculeDatabase.MoleculeDatabase(given_tc = 1.0)
+    molecules = []
+    for molPath in moleculesPath: 
+      mol = utilities.getRDKitMolecule(molPath, Path(molPath).suffix)
+      molecules.append(mol)
+
+    database.addAll(molecules)
+    
+    assert len(database.GetAllMolecules()) == size
+
+
+def run_GetAllMoleculesTests():
+    cwd = Path.cwd().joinpath("eMolFrag2", "unittests", "data")
+    moleculesPath = []
+
+    # Test 1: adding 5 unique molecules 
+    uniqueMol1 = cwd.joinpath("uniqueMol(SMI)/DB00415.smi")
+    uniqueMol2 = cwd.joinpath("uniqueMol(SMI)/DB01208.smi")
+    uniqueMol3 = cwd.joinpath("uniqueMol(SMI)/DB04626.smi")
+    uniqueMol4 = cwd.joinpath("uniqueMol(SMI)/DB11774.smi")
+    uniqueMol5 = cwd.joinpath("uniqueMol(SMI)/DB13499.smi")
+
+    moleculesPath.extend([uniqueMol1, uniqueMol2, uniqueMol3, uniqueMol4, uniqueMol5])
+    run_GetAllMolecules(moleculesPath, 5)
+
+    # Test 2: adding 3 sets of 2 similar molecules 
+    mol1 = cwd.joinpath("similarPairSMI/1/DB00452.smi")
+    mol2 = cwd.joinpath("similarPairSMI/1/DB01421.smi")
+    mol3 = cwd.joinpath("similarPairSMI/2/DB01137.smi")
+    mol4 = cwd.joinpath("similarPairSMI/2/DB01165.smi")
+    mol5 = cwd.joinpath("similarPairSMI/3/DB12447.smi")
+    mol6 = cwd.joinpath("similarPairSMI/3/DB16219.smi")
+
+    moleculesPath.clear()
+    moleculesPath.extend([mol1, mol2, mol3, mol4, mol5, mol6])
+    #run_GetAllMolecules(moleculesPath, 6)
 
 def run(func):
     try: 
@@ -178,8 +270,9 @@ def runtests(printlevel):
     # 
     tests = { "_TCEquiv" : run_TCEquivTests,
               "add" : run_addTests,
-              "addAll" : run_addAllTests
-              # "GetAllMolecules" : run_GetAllMoleculesTests
+              "addAll" : run_addAllTests,
+              "GetUniqueMolecules" : run_GetUniqueMoleculesTests,
+              "GetAllMolecules" : run_GetAllMoleculesTests
             }
     #
     # Run 
