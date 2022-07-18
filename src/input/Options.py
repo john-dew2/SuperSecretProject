@@ -1,6 +1,7 @@
 #Options.py
 from eMolFrag2.unittests import utilities
 
+
 #input_path
 #output_path
 #parallel_cores_used
@@ -50,11 +51,6 @@ class Options:
     #
     def setOption(self, argType, option):
     
-        argTypes = ["-i","-o","-p","-m","-c"]
-        if option in argType:
-            utilities.emit(0,f"Can't have a {option} argument follow a {argType} argument")
-            return
-    
         if (argType == "-i"):   
             self.INPUT_PATH = option
             
@@ -99,3 +95,17 @@ class Options:
         
         else:
             utilities.emit(0, f"[Error] {argType} does not exist")
+
+    def setOptions(self, args):
+      try:
+        self.setOption("-i", args.i)
+      except:
+        pass
+      try:
+        self.setOption("-o", args.o)
+      except:
+        pass
+      try:
+        self.setOption("-c", args.c)
+      except:
+        pass
