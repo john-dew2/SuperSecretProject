@@ -20,11 +20,6 @@ def main():
     #Process
     
     #Post-Process
-	
-	
-
-
-
 
 
 if __name__ == '__main__':
@@ -52,10 +47,3 @@ if __name__ == '__main__':
   ARGS = parser.parse_args()
   #logging.basicConfig(level=args.loglevel)
   main()
-
-
-
-
-
-if __name__ == "__main__":
-	main()
