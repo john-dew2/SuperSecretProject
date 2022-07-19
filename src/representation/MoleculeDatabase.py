@@ -1,4 +1,3 @@
-import math 
 from rdkit import DataStructs # For TC Computations
 
 import sys
@@ -22,21 +21,6 @@ class MoleculeDatabase(Molecule):
             raise RuntimeError
 
         self.TC_THRESH = given_tc
-
-    #
-    # @input: 2 Molecule objects
-    # @output: True if the molecules are TC-equivalent; False otherwise
-    #          (we use math.isclose to assess floating-point-based equivalent)
-    #
-    def _TCEquiv(self, mol1, mol2):
-        
-        tanimoto = tc.TC(mol1, mol2)  
-        # >   
-        if (tanimoto > self.TC_THRESH):
-          return True
-        # =                                         # 4-decimal place equality 
-        return math.isclose(tanimoto, self.TC_THRESH, rel_tol = 1e-5)
-
     
     #
     # Add one Molecule object to the database
@@ -45,7 +29,8 @@ class MoleculeDatabase(Molecule):
     #
     def add(self, molecule):
       
-        tc_equiv = [db_mol for db_mol in self.database.keys() if self._TCEquiv(molecule, db_mol)]
+        tc_equiv = [db_mol for db_mol in self.database.keys() \
+                    if tc.TCEquiv(molecule, db_mol, tc_threshold  = self.TC_THRESH)]
 
         if len(tc_equiv) > 1:
             print(f'Internal MoleculeDatabase error; {len(tc_equiv)}-TC equivalent molecules')            

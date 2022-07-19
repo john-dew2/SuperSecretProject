@@ -1,13 +1,13 @@
-from Molecule import Molecule
+from eMolFrag2.src.representation import Molecule
 
-class Linker(Molecule):
+class Linker(Molecule.Molecule):
 
-    def __init__(self, rdkit_obj, parent):
+    def __init__(self, rdkit_mol, parent):
         """
             @input: rdkit_obj -- Rdkit.Mol object representing this fragment
             @input: parent -- Molecule object (contains origin information for this fragment) 
         """
-        Molecule.__init__(self, rdkit_mol, parentMol = parent)
+        Molecule.Molecule.__init__(self, rdkit_mol, parentMol = parent)
 
         
     def toSDF():

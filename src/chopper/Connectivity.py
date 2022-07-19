@@ -1,7 +1,7 @@
 from rdkit import Chem
 from eMolFrag2.src.utilities import constants
 from eMolFrag2.src.utilities import logging
-import BRICS_custom
+from eMolFrag2.src.chopper import BRICS_custom
         
 def compute(rdkit_mol, snips):
     """

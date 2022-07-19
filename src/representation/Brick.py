@@ -1,14 +1,14 @@
-from Molecule import Molecule
+from eMolFrag2.src.representation import Molecule
 from eMolFrag2.src.utilities import constants
 
-class Brick(Molecule):
+class Brick(Molecule.Molecule):
 
-    def __init__(self, rdkit_obj, parent):
+    def __init__(self, rdkit_mol, parent):
         """
             @input: rdkit_obj -- Rdkit.Mol object representing this fragment
             @input: parent -- Molecule object (contains origin information for this fragment) 
         """
-        Molecule.__init__(self, rdkit_mol, parentMol = parent)
+        Molecule.Molecule.__init__(self, rdkit_mol, parentMol = parent)
         
     def toSDF():
         """
@@ -40,7 +40,9 @@ class Brick(Molecule):
         
         mol.SetProp(SDF_OUTPUT_BRICK_CONNECTIONS, appendix)
 
-        # TODO: add similar fragments appendix
+        # TODO: name fragments
+        #similar_appendix = '\n'.join(sim_mol.getName() for sim_mol in self.similar)
+        #self.rdkitObject.SetProp(SDF_OUTPUT_SIMILAR_FRAGMENTS, similar_appendix)
 
         writer.write(mol)
         writer.close()

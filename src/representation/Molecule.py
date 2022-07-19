@@ -3,6 +3,7 @@ from rdkit import Chem
 from rdkit.Chem import AllChem
 from rdkit import DataStructs
 from eMolFrag2.src.utilities import constants
+from eMolFrag2.src.utilities import tc
 
 class Molecule:
     def __init__(self, rdkit_mol,  file_name = None, parentMol = None):
@@ -48,20 +49,15 @@ class Molecule:
         for property in properties:
             self.rdkitObject.ClearProp(property)
 
+    def __hash__(self):       
+        # hash(custom_object)
+        return self.rdkitObject.__hash__()
+
     def __eq__(self, molecule):
-        # Use our TC.tc code.
-        # Acquire 
-        fp1 = AllChem.GetMorganFingerprintAsBitVect(self.rdkitObject, 3, nBits=2048)
-        fp2 = AllChem.GetMorganFingerprintAsBitVect(molecule.rdkitObject, 3, nBits=2048)
-        tc = round(DataStructs.TanimotoSimilarity(fp1,fp2),3)
-        
-        return tc == 1
+        return tc.TCEquiv(self, molecule)
     
     def __str__(self):
         numAtoms = self.rdkitObject.GetNumAtoms()
         numBonds = self.rdkitObject.GetNumAtoms()
         
         return f"{self.filename} has {numAtoms} atoms and {numBonds} bonds"
-        
-        #do __eq__
-        #do __str__ that meaningfully calls the rdkit molecule toString()

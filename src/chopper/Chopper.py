@@ -1,8 +1,12 @@
 from rdkit import Chem
-from eMolFrag2.src.utilities import logging
-import Preprocessor
-import Deconstructor
-import Connectivity
+from eMolFrag2.src.utilities import *
+from eMolFrag2.src.chopper import Preprocessor
+from eMolFrag2.src.chopper import Deconstructor
+from eMolFrag2.src.chopper import Connectivity
+from eMolFrag2.src.chopper import Fragmenter
+from eMolFrag2.src.representation import MoleculeDatabase as MDB
+from eMolFrag2.src.representation import Brick
+from eMolFrag2.src.representation import Linker
 
 def chop(rdkit_mol):
     """
@@ -32,7 +36,7 @@ def chop(rdkit_mol):
         Output: list of Rdkit.Mol Bricks, list of Rdkit.Mol Linkers
     """
     # (0)
-    mol = preprocess(rdkit_mol)
+    mol = Preprocessor.preprocess(rdkit_mol)
 
     #
     # Steps (1) - (4)
@@ -61,12 +65,12 @@ def chopall(mols):
         @output: MoleculeDatabase of brick fragments
         @output: MoleculeDatabase of linker fragments        
     """
-    brick_db = MoleculeDatabase(constants.DEFAULT_TC_UNIQUENESS)
-    linker_db = MoleculeDatabase(constants.DEFAULT_TC_LINKER_UNIQUENESS)
+    brick_db = MDB.MoleculeDatabase(constants.DEFAULT_TC_UNIQUENESS)
+    linker_db = MDB.MoleculeDatabase(constants.DEFAULT_TC_LINKER_UNIQUENESS)
 
     for mol in mols:
 
-        logging.logger.debug(f'Processing molecule{mol.GetFileName()}')
+        logging.logger.debug(f'Processing molecule{mol.getFileName()}')
 
         #
         # Chop
@@ -76,14 +80,14 @@ def chopall(mols):
         #
         # Process the results
         #
-        results = database.addAll([Brick(b, mol) for b in bricks])
+        results = brick_db.addAll([Brick.Brick(b, mol) for b in bricks])
     
-        logging.logger.debug(f'Added {result.count(True)} TC-unique bricks; \
-                             {result.count(False)} were TC-redundant')
+        logging.logger.debug(f'Added {results.count(True)} TC-unique bricks; \
+                             {results.count(False)} were TC-redundant')
 
-        results = database.addAll([Linker(ell, mol) for ell in linkers])
+        results = linker_db.addAll([Linker.Linker(ell, mol) for ell in linkers])
 
-        logging.logger.debug(f'Added {result.count(True)} TC-unique linkers; \
-                             {result.count(False)} were TC-redundant')
+        logging.logger.debug(f'Added {results.count(True)} TC-unique linkers; \
+                             {results.count(False)} were TC-redundant')
 
     return brick_db, linker_db

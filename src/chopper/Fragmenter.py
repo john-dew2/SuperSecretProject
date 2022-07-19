@@ -1,5 +1,5 @@
 from rdkit import Chem
-from eMolFrag2.src.utilities import logger
+from eMolFrag2.src.utilities import logging
 
 def fragmentToMol(mol, frag_as_set):
     """
@@ -21,7 +21,7 @@ def fragmentToMol(mol, frag_as_set):
     try:
         Chem.SanitizeMol(cp)
     except:
-        logger.warning(f'Fragment {frag_as_set} is not sanitizable.')
+        logging.logger.warning(f'Fragment {frag_as_set} is not sanitizable.')
     
     return cp
 
@@ -36,5 +36,5 @@ def fragmentAll(mol, bricks, linkers):
          @output: list of Rdkit.Mols corresponding to bricks
          @output: list of Rdkit.Mols corresponding to linkers
     """
-    return [fragmentToMol(mol, brick) for brick in bricks],
+    return [fragmentToMol(mol, brick) for brick in bricks], \
            [fragmentToMol(mol, linker) for linker in linkers]

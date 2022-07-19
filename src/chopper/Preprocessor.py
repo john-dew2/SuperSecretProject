@@ -1,8 +1,8 @@
 from rdkit import Chem
 from eMolFrag2.src.utilities import logging
 from eMolFrag2.src.utilities import constants
-import Deconstructor
-import Connectivity
+from eMolFrag2.src.chopper import Deconstructor
+from eMolFrag2.src.chopper import Connectivity
 
 def ensureAtomTypeIntegrity(mol):
     """
@@ -34,12 +34,12 @@ def preprocess(rdkit_mol):
     cp_mol = Chem.RWMol(rdkit_mol)
     
     # (1) Remove all hydrogens from our molecule
-    cp_mol = cp_mol.RemoveAllHs()
+    cp_mol = Chem.RemoveAllHs(cp_mol)
 
     #
     # (2) Ensure we have atomtype information for all atoms
     #
     if not ensureAtomTypeIntegrity(cp_mol):
-        logger.warning(f'molecule does not have Tripos AtomTypes specified or computed; using Atom symbols as substitute')
+        logging.logger.warning(f'molecule does not have Tripos AtomTypes specified or computed; using Atom symbols as substitute')
 
     return cp_mol

@@ -4,7 +4,7 @@ from pathlib import Path
 from rdkit import Chem
 from eMolFrag2.src.input import AcquireFiles, AcquireMolecules, Configuration, Options
 
-from eMolFrag2.src.utilities import Logger
+from eMolFrag2.src.utilities import logging
 from eMolFrag2.src.chopper import Chopper
 
 def main():
@@ -17,11 +17,11 @@ def main():
 
     # Get files
     files = AcquireFiles.acquireMoleculeFiles(initializer)    
-    logger.info(f'{len(files)} files to be processed.")
+    logging.logger.info(f'{len(files)} files to be processed.')
     
     # Get molecules
     molecules = AcquireMolecules.acquireMolecules(files)
-    logger.info(f'{len(dataset)} molecules to be chopped.")
+    logging.logger.info(f'{len(dataset)} molecules to be chopped.')
  
     # CHOP
     brick_db, linker_db = Chopper.chopall(molecules)
