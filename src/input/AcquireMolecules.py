@@ -49,6 +49,7 @@ def acquireMolecules(files):
 
     #parse each file to convert to RDKit molecule        
     for current_file in files:
+
       #get the contents of the file and the file type (extension) for processing
       file_contents = fileToString(current_file)
       extension = current_file.suffix
@@ -62,7 +63,6 @@ def acquireMolecules(files):
 
       #add it to our dataset and update the filenames we have
       else:
-          molObject = Molecule.Molecule(molecule, current_file.name)
-          data.append(molObject)
+          data.append(Molecule.Molecule(molecule, current_file.name))
             
     return data

@@ -5,22 +5,18 @@ import BRICS_custom
         
 def compute(rdkit_mol, snips):
     """
-       Compute all connectivity information for bricks and linkers.
+        Compute all connectivity information for bricks and linkers.
        
-       The main algorithm is to identify where dummy atoms would be placed by BRICS breaking bonds.
-       Conventiently, given a snip (start, end) where BRICS would cleave, one atom in the snip is in a (unique)
-       fragment, while the other atom would be a radical (or dummy).
+        The main algorithm is to identify where dummy atoms would be placed by BRICS
+        breaking bonds. Conventiently, given a snip (start, end) where BRICS would
+        cleave, one atom in the snip is in a (unique) fragment, while the other atom
+        would be a radical (or dummy).
 
-       Connectivity for an atom in a fragment is the atom-type of the dummy
+        Connectivity for an atom in a fragment is the atom-type of the dummy
 
         @input: mol (Rdkit.Mol)
-        @input: bricks (set of tuples of int indices) -- integer-based brick fragments
-        @input: linkers (set of tuples of int indices) -- integer-based linker fragments
         @input: snips (set of 2-tuples) -- bonds where we would cleave
-
-        @output: Molecule Database containing all linkers
-        @output: Molecule Database containing all bricks
-    """
+   """
     # Analyze all snips in both directions
     for (start, end) in list(snips) + [(y, x) for x, y in snips]:
 

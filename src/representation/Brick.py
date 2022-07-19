@@ -2,10 +2,15 @@ from Molecule import Molecule
 from eMolFrag2.src.utilities import constants
 
 class Brick(Molecule):
-    def __init__(self, rdkit_object, file_name):
-        Molecule.__init__(self, rdkit_object, file_name)
+
+    def __init__(self, rdkit_obj, parent):
+        """
+            @input: rdkit_obj -- Rdkit.Mol object representing this fragment
+            @input: parent -- Molecule object (contains origin information for this fragment) 
+        """
+        Molecule.__init__(self, rdkit_mol, parentMol = parent)
         
-    def getSDF():
+    def toSDF():
         """
             Assuming a molecule with AtomType and connectivity
             information preseversed, output the molecule in SDF format

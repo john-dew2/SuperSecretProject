@@ -45,7 +45,7 @@ class MoleculeDatabase(Molecule):
     #
     def add(self, molecule):
       
-        tc_equiv = list(filter(lambda db_mol : self._TCEquiv(molecule, db_mol), self.database.keys()))
+        tc_equiv = [db_mol for db_mol in self.database.keys() if self._TCEquiv(molecule, db_mol)]
 
         if len(tc_equiv) > 1:
             print(f'Internal MoleculeDatabase error; {len(tc_equiv)}-TC equivalent molecules')            
@@ -54,9 +54,14 @@ class MoleculeDatabase(Molecule):
         if not tc_equiv:
             self.database[molecule] = []
             return True
-            
-        # Not a TC-unique fragment: { tc_equiv, [..., molecule] }
+
+        # TC-similar fragment: { tc_equiv, [..., molecule] }
+        # Add this molecule as being similar to all other molecules in this equivalence class
+        tc_equiv[0].addTCSimilar(molecule)
+        for sim_mol in self.database[tc_equiv[0]]:
+            sim_mol.addTCSimilar(molecule)
         self.database[tc_equiv[0]].append(molecule)
+
         return False
     
     #
