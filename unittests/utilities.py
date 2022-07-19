@@ -56,6 +56,9 @@ def getRDKitMolecule(path, extension):
     return convertToRDkit(content, extension)
     
 def createParser(arguments):
+  if arguments == None:
+    return None
+
   from argparse import ArgumentParser
   parser = ArgumentParser(description='eMolFrag2')
   parser.add_argument("-i",
