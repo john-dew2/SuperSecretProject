@@ -2,6 +2,7 @@
 from rdkit import Chem
 from rdkit.Chem import AllChem
 from rdkit import DataStructs
+from eMolFrag2.src.utilities import constants
 
 class Molecule:
     def __init__(self, rdkit_object, file_name):
@@ -24,7 +25,20 @@ class Molecule:
         
     def setEqualFragments(self, listOfFragments):
         self.equalFragments = listOfFragments
-        
+
+    def clearProperties(self):
+        """
+           Clean the rdkit molecule of all 'public' properties and 'private'
+           Tripos ChargeType information
+
+            @input: Rdkit.Mol
+            @output: None
+        """
+        properties = self.rdkitObject.GetPropNames()
+        properties.append(constants.ATOMTYPE_PROP) # Remove an errant property
+        for property in properties:
+            self.rdkitObject.ClearProp(property)
+
     def __eq__(self, molecule):
         # Acquire 
         fp1 = AllChem.GetMorganFingerprintAsBitVect(self.rdkitObject, 3, nBits=2048)

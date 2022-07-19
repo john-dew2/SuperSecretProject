@@ -1,7 +1,7 @@
 from rdkit import Chem
 from eMolFrag2.src.utilities import constants
 from eMolFrag2.src.utilities import logging
-import BRICS_custom
+from eMolFrag2.src.chopper import BRICS_custom
 
 def getMolMatrix(mol):
   """ 
@@ -38,8 +38,10 @@ def molBRICSBonds(mol):
       Returns: 
                 a (list of tuples): De-Duplicated BRICS Bonds List
   """
-  snips = [(a, b) for (a, b), (c, d) in list(BRICS_custom.FindBRICSBonds(mol))] # get Bricks snips
-  return {(a, b) if (a < b) else (b, a) for a, b in snips} # reorder tuples as set
+  snips = [(a, b) for (a, b), (c, d) in list(BRICS_custom.FindBRICSBonds(mol))]
+
+  # reorder tuples as set
+  return {(a, b) if (a < b) else (b, a) for a, b in snips}
 
 def molFragments(l):
   """ 
@@ -113,15 +115,24 @@ def computeFragmentsAndSnips(nxfrags, snips):
 
     # Handle sequences of linkers
     linkers, snips_r = combineAdjLinkerSequences(linkers, snips)
- 
-    snips -= snips_r # Remove snip removelist from snip list
+
+    # Remove snip removelist from snip list
+    snips -= snips_r
+    
     logger.debug(f"Final Snips: {snips}")
 
     return bricks, linkers, snips
     
 def deconstruct(rdkit_mol):
     """
-        Main deconstruction of an rdkit molecule
+        Main deconstruction of an rdkit molecule into brickers, linkers and the
+        BRICS cleave bonds between the fragments
+        
+        @input: molecule (Rdkit.Mol)
+        @output: set of 
+                bricks (set): Set of bricks (as tuples of integers)
+                linkers (set): Set of linkers (joined) (as tuples of integers)
+                snips (set): Set of snips (joined) (set of 2-tuples)
     """
 
     # Acquire an adjacency list of the graph corresponding to the input molecule
