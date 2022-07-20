@@ -70,4 +70,9 @@ class MoleculeDatabase(Molecule):
             all_mols += tc_mols
 
         return all_mols
+    
+    def numUnique(self):
+        return len(self.database.keys())
         
+    def numAllMolecules(self):
+        return len(self.GetAllMolecules())

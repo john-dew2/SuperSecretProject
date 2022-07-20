@@ -21,12 +21,14 @@ def main():
     
     # Get molecules
     molecules = AcquireMolecules.acquireMolecules(files)
-    logging.logger.info(f'{len(dataset)} molecules to be chopped.')
+    logging.logger.info(f'{len(molecules)} molecules to be chopped.')
  
     # CHOP
     brick_db, linker_db = Chopper.chopall(molecules)
     
     # Output fragments
+    logging.logger.info(f'{brick_db.numUnique()} unique bricks among {brick_db.numAllMolecules()} bricks')
+    logging.logger.info(f'{linker_db.numUnique()} unique linkers among {linker_db.numAllMolecules()} linkers')
     
 
 

@@ -36,5 +36,5 @@ def fragmentAll(mol, bricks, linkers):
          @output: list of Rdkit.Mols corresponding to bricks
          @output: list of Rdkit.Mols corresponding to linkers
     """
-    return [fragmentToMol(mol, brick) for brick in bricks], \
-           [fragmentToMol(mol, linker) for linker in linkers]
+    return [fragmentToMol(mol, set(brick)) for brick in bricks], \
+           [fragmentToMol(mol, set(linker)) for linker in linkers]
