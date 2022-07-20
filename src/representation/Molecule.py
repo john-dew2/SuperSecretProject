@@ -69,4 +69,4 @@ class Molecule:
                              prefix = "", \
                              numeric_suffix = 0, \
                              extension = constants.SDF_FORMAT_EXT):
-        return f'prefix-{file_name}-{str(numeric_suffix).zfill(3)}{extension}'
+        return f'{prefix}-{file_name}-{str(numeric_suffix).zfill(3)}{extension}'
