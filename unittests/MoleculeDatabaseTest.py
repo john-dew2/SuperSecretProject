@@ -3,81 +3,15 @@ from pathlib import Path
 import sys
 from eMolFrag2.unittests import utilities
 from eMolFrag2.src.representation import Molecule, MoleculeDatabase
-
-
-def run_TCEquiv(mol1path, mol2path, expec_result):
-
-    mol1 = utilities.getRDKitMolecule(mol1path,Path(mol1path).suffix)
-    mol2 = utilities.getRDKitMolecule(mol2path,Path(mol2path).suffix)
-    
-    md = MoleculeDatabase.MoleculeDatabase(given_tc = 1.0)
-
-    assert md._TCEquiv(mol1, mol2) == expec_result
-
-def run_TCEquivTests():
-
-    cwd = Path.cwd().joinpath("eMolFrag2", "unittests", "data")
-
-    # Test tc unique molecules (antibiotics with tc < 1.0 )
-    mol1path = cwd.joinpath("uniqueMol(SMI)/DB00415.smi")
-    mol2path = cwd.joinpath("uniqueMol(SMI)/DB01208.smi")
-    mol3path = cwd.joinpath("uniqueMol(SMI)/DB04626.smi")
-
-    run_TCEquiv(mol1path, mol2path, False)
-    run_TCEquiv(mol1path, mol3path, False)
-    run_TCEquiv(mol2path, mol3path, False)
-
-
-    # Test similar pair antibiotics 
-    # set 1
-    mol1 = cwd.joinpath("similarPairSMI/1/DB00452.smi")
-    mol2 = cwd.joinpath("similarPairSMI/1/DB01421.smi") 
-    run_TCEquiv(mol1, mol2, True) 
-
-    # set 2 
-    mol3 = cwd.joinpath("similarPairSMI/2/DB01137.smi")
-    mol4 = cwd.joinpath("similarPairSMI/2/DB01165.smi")
-    run_TCEquiv(mol3, mol4, True)
-    
-    # prove sets of pairs of molecules do not have tc_equiv
-    run_TCEquiv(mol1, mol3, False) 
-    run_TCEquiv(mol1, mol4, False) 
-    run_TCEquiv(mol2, mol3, False) 
-    run_TCEquiv(mol2, mol4, False) 
-
-    # set 3 
-    mol5 = cwd.joinpath("similarPairSMI/3/DB12447.smi")
-    mol6 = cwd.joinpath("similarPairSMI/3/DB16219.smi")
-    run_TCEquiv(mol5, mol6, True)     
-
-    # Test tc unique molecules (tc < 1.0)
-    uniqueMol1 = cwd.joinpath("uniqueMol(SMI)/DB00415.smi")
-    uniqueMol2 = cwd.joinpath("uniqueMol(SMI)/DB01208.smi")
-    uniqueMol3 = cwd.joinpath("uniqueMol(SMI)/DB04626.smi")
-    uniqueMol4 = cwd.joinpath("uniqueMol(SMI)/DB11774.smi")
-    uniqueMol5 = cwd.joinpath("uniqueMol(SMI)/DB13499.smi")
-
-    run_TCEquiv(uniqueMol1, uniqueMol2, False)
-    run_TCEquiv(uniqueMol1, uniqueMol3, False)
-    run_TCEquiv(uniqueMol1, uniqueMol4, False)
-    run_TCEquiv(uniqueMol1, uniqueMol5, False)
-
-    run_TCEquiv(uniqueMol2, uniqueMol3, False)
-    run_TCEquiv(uniqueMol2, uniqueMol4, False) 
-    run_TCEquiv(uniqueMol2, uniqueMol5, False)
-
-    run_TCEquiv(uniqueMol3, uniqueMol4, False)
-    run_TCEquiv(uniqueMol3, uniqueMol5, False)
-    
-    run_TCEquiv(uniqueMol4, uniqueMol5, False)
-
+from eMolFrag2.src.utilities import tc    # _TCEquiv tests
 
 
 def run_add(md, molPath, expec_result):
 
     # Create rdkit object from file path           extension
     mol = utilities.getRDKitMolecule(molPath, Path(molPath).suffix)
-    assert md.add(mol) == expec_result 
+    Mol = Molecule.Molecule(mol, molPath.name)
+    assert md.add(Mol) == expec_result 
 
 def run_addTests():
 
@@ -109,9 +43,14 @@ def run_addTests():
 # return the list of UNIQUE database
 def run_addAll(md, moleculesPath, length):
     molecules = []
+
     for molPath in moleculesPath: 
+      # 1. create rdkit object 
       mol = utilities.getRDKitMolecule(molPath, Path(molPath).suffix)
-      molecules.append(mol)
+      # 2. create a local molecule, take in (rdkit_object and file_name )
+      Mol = Molecule.Molecule(mol, molPath.name)
+      # 3. add local molecule to a list 
+      molecules.append(Mol)
 
     # frequency = md.addAll(molecules)
     # print("Size of list:\n", len(frequency))
@@ -165,8 +104,12 @@ def run_GetUniqueMolecules(moleculesPath, size):
     database = MoleculeDatabase.MoleculeDatabase(given_tc = 1.0)
     molecules = []
     for molPath in moleculesPath: 
+      # 1. create rdkit object, take in (file_path, file_extension)
       mol = utilities.getRDKitMolecule(molPath, Path(molPath).suffix)
-      molecules.append(mol)
+      # 2. create a local molecule, take in (rdkit_object and file_name)
+      Mol = Molecule.Molecule(mol, molPath.name)
+      # 3. add local molecule to a list 
+      molecules.append(Mol)
 
     database.addAll(molecules)
   
@@ -206,16 +149,24 @@ def run_GetUniqueMoleculesTests():
 
 
 def run_GetAllMolecules(moleculesPath, size):
+    
     database = MoleculeDatabase.MoleculeDatabase(given_tc = 1.0)
     molecules = []
+    
+    # convert each file path to local molecule and add to a list 
     for molPath in moleculesPath: 
+      # 1. create rdkit object 
       mol = utilities.getRDKitMolecule(molPath, Path(molPath).suffix)
-      molecules.append(mol)
+      # 2. create a local molecule, take in (rdkit_object and file_name )
+      Mol = Molecule.Molecule(mol, molPath.name)
+      # 3. add local molecule to a list 
+      molecules.append(Mol)
 
     database.addAll(molecules)
     
     assert len(database.GetAllMolecules()) == size
 
+  
 
 def run_GetAllMoleculesTests():
     cwd = Path.cwd().joinpath("eMolFrag2", "unittests", "data")
@@ -266,11 +217,13 @@ def runtests(printlevel):
     #
     # Define all tests as a Dictionary: {str-name, <function-to-execute>}
     # 
-    tests = { "_TCEquiv" : run_TCEquivTests,
+    tests = { # "_TCEquiv" : run_TCEquivTests,
               "add" : run_addTests,
               "addAll" : run_addAllTests,
               "GetUniqueMolecules" : run_GetUniqueMoleculesTests,
-              "GetAllMolecules" : run_GetAllMoleculesTests
+              "GetAllMolecules" : run_GetAllMoleculesTests,
+              "numUnique" : run_numUniqueTests, 
+              "numAllMolecules" : run_numAllMolecules 
             }
     #
     # Run 

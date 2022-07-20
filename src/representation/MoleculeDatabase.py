@@ -29,7 +29,7 @@ class MoleculeDatabase(Molecule):
     #
     def add(self, molecule):
 
-        print("Adding", molecule.getFileName())
+         # print("Adding", molecule.getFileName())
       
         tc_equiv = [db_mol for db_mol in self.database.keys() \
                     if tc.TCEquiv(molecule, db_mol, tc_threshold  = self.TC_THRESH)]

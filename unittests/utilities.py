@@ -28,7 +28,14 @@ def convertToRDkit(contents, extension):
         return Chem.MolFromHELM(contents)
 
     if (extension == ".mol2"):
-        return Chem.MolFromMol2Block(contents, False)
+      try: 
+        # default parameters: (str)contents 
+        #                     sanitize=True
+        #                     removeHs=True
+        #                     cleanupSubstructures=True
+        return Chem.MolFromMol2Block(contents)
+      except: 
+        return Chem.MolFromMol2Block(contents, sanitize = False)
 
     if (extension == ".mol"):
         return Chem.MolFromMolBlock(contents)
