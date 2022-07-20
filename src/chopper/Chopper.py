@@ -80,12 +80,12 @@ def chopall(mols):
         #
         # Process the results
         #
-        results = brick_db.addAll([Brick.Brick(b, mol) for b in bricks])
+        results = brick_db.addAll([Brick.Brick(b, mol, suffix = index) for index, b in enumerate(bricks)])
     
         logging.logger.debug(f'Added {results.count(True)} TC-unique bricks; \
                              {results.count(False)} were TC-redundant')
 
-        results = linker_db.addAll([Linker.Linker(ell, mol) for ell in linkers])
+        results = linker_db.addAll([Linker.Linker(ell, mol, suffix = index) for index, ell in enumerate(linkers)])
 
         logging.logger.debug(f'Added {results.count(True)} TC-unique linkers; \
                              {results.count(False)} were TC-redundant')

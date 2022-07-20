@@ -1,4 +1,6 @@
-#That molecule class will contain the rdkit object, the name of the file it came from, as well as a list of 'equal other fragments'.
+#
+# That molecule class will contain the rdkit object, the name of the file it came from, as well as a list of 'equal other fragments'.
+#
 from rdkit import Chem
 from rdkit.Chem import AllChem
 from rdkit import DataStructs
@@ -61,3 +63,10 @@ class Molecule:
         numBonds = self.rdkitObject.GetNumAtoms()
         
         return f"{self.filename} has {numAtoms} atoms and {numBonds} bonds"
+        
+    def makeFragmentFileName(self, \
+                             file_name, \
+                             prefix = "", \
+                             numeric_suffix = 0, \
+                             extension = constants.SDF_FORMAT_EXT):
+        return f'prefix-{file_name}-{str(numeric_suffix).zfill(3)}{extension}'

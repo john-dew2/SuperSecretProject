@@ -28,6 +28,8 @@ class MoleculeDatabase(Molecule):
     # @output: if the given molecule is unique, return True (False if it is TC-redudant
     #
     def add(self, molecule):
+
+        print("Adding", molecule.getFileName())
       
         tc_equiv = [db_mol for db_mol in self.database.keys() \
                     if tc.TCEquiv(molecule, db_mol, tc_threshold  = self.TC_THRESH)]
@@ -76,3 +78,12 @@ class MoleculeDatabase(Molecule):
         
     def numAllMolecules(self):
         return len(self.GetAllMolecules())
+        
+    def __str__(self):
+        """
+            Output of the equivalences classes represented in this database
+        """
+        string = ""
+        for mol, equivalent in self.database.items():        
+            string += f'{mol.getFileName()}: [{", ".join([eq_mol.getFileName() for eq_mol in equivalent])}]\n'      
+        return string

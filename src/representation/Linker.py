@@ -1,14 +1,19 @@
 from eMolFrag2.src.representation import Molecule
+from eMolFrag2.src.utilities import constants
 
 class Linker(Molecule.Molecule):
 
-    def __init__(self, rdkit_mol, parent):
+    def __init__(self, rdkit_mol, parent, suffix = 0):
         """
             @input: rdkit_obj -- Rdkit.Mol object representing this fragment
+            @input: num_suf -- numeric suffix to differentiate the fragment from other fragments
             @input: parent -- Molecule object (contains origin information for this fragment) 
         """
         Molecule.Molecule.__init__(self, rdkit_mol, parentMol = parent)
 
+        self.filename = self.makeFragmentFileName(parent.getFileName(), \
+                                                  prefix = constants.LINKER_PREFIX, \
+                                                  numeric_suffix = suffix)
         
     def toSDF():
         """

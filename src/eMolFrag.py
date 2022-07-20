@@ -29,8 +29,9 @@ def main():
     # Output fragments
     logging.logger.info(f'{brick_db.numUnique()} unique bricks among {brick_db.numAllMolecules()} bricks')
     logging.logger.info(f'{linker_db.numUnique()} unique linkers among {linker_db.numAllMolecules()} linkers')
-    
 
+    print(brick_db)    
+    print(linker_db)
 
 if __name__ == '__main__':
 
