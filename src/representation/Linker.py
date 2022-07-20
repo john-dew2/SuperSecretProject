@@ -36,7 +36,6 @@ class Linker(Molecule.Molecule):
 
         self.rdkitObject.SetProp(constants.SDF_OUTPUT_LINKER_CONNECTIONS, appendix)
 
-        # TODO: name fragments
         #similar_appendix = '\n'.join(sim_mol.getName() for sim_mol in self.similar)
         #self.rdkitObject.SetProp(SDF_OUTPUT_SIMILAR_FRAGMENTS, similar_appendix)
 

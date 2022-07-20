@@ -27,13 +27,6 @@ class Brick(Molecule.Molecule):
         """
         self.clearProperties()
 
-        # Write to a string
-        from rdkit.six import StringIO
-        sio = StringIO()
-        writer = Chem.SDWriter(sio)
-
-        self.rdkitObject.SetProp('_Name', self.getFileName()) # set a title line
-
         # ATOMTYPES appendix; take directly from Atom.Prop information
         self.rdkitObject.SetProp(constants.SDF_OUTPUT_BRICK_ATOMTYPES, '\n'.join([atom.GetProp(constants.ATOMTYPE_PROP) for atom in self.rdkitObject.GetAtoms()]))
 
@@ -49,11 +42,4 @@ class Brick(Molecule.Molecule):
         
         self.rdkitObject.SetProp(constants.SDF_OUTPUT_BRICK_CONNECTIONS, appendix)
 
-        # TODO: name fragments
-        #similar_appendix = '\n'.join(sim_mol.getName() for sim_mol in self.similar)
-        #self.rdkitObject.SetProp(SDF_OUTPUT_SIMILAR_FRAGMENTS, similar_appendix)
-
-        writer.write(self.rdkitObject)
-        writer.close()
-
-        return sio.getvalue()
+        return self._toSDF()

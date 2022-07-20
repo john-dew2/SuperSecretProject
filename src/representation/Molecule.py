@@ -71,3 +71,37 @@ class Molecule:
                              numeric_suffix = 0, \
                              extension = constants.SDF_FORMAT_EXT):
         return f'{prefix}-{file_name}-{str(numeric_suffix).zfill(3)}{extension}'
+        
+        
+    def _toSDF(self):
+        """
+            Constructs common SDF format information among Brick and Linker fragments
+
+            Common Brick and Linker properties include:
+               (1) Name of the Fragment
+               (2) A list of TC-equivalent fragments
+
+            @output: SDF format as string
+        """
+        
+        #
+        # Name this molcule: First line in SDF output
+        #
+        self.rdkitObject.SetProp('_Name', self.getFileName()) # set a title line
+
+        #
+        # Appendix consisting of all similar fragments (from the Database equivalence class)
+        #
+        similar_appendix = '\n'.join(sim_mol.getFileName() for sim_mol in self.similar)
+        self.rdkitObject.SetProp(constants.SDF_OUTPUT_SIMILAR_FRAGMENTS, similar_appendix)
+
+        #
+        # Output the SDF formated string
+        #
+        from rdkit.six import StringIO
+        sio = StringIO()
+        writer = Chem.SDWriter(sio)
+        writer.write(self.rdkitObject)
+        writer.close()
+
+        return sio.getvalue()
