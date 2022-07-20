@@ -43,14 +43,10 @@ class Options:
             self.OUTPUT_PATH = option
             
         elif (argType == "-u"):
-            if (option == 1): option = True
-            else: option = False
             self.INDIVIDUAL = option
             self.ALL = not(option)
         
         elif (argType == "-indiv"):
-            if (option == 1): option = True
-            else: option = False
             self.UNIQUE = option
             self.REDUNDANT = not(option)
         else:

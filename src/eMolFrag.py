@@ -48,11 +48,11 @@ if __name__ == '__main__':
                       help = 'Set the output path')
   
   parser.add_argument("-u",
-                      type=int, choices = [1, 0],
+                      action='store_true',
                       help = 'Set the execution type')
   
   parser.add_argument("-indiv",
-                      type = int, choices = [1, 0],
+                      action='store_true',
                       help = 'Set the format of the output as being all fragments in their own files')
   
   ARGS = parser.parse_args()
