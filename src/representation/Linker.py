@@ -1,3 +1,5 @@
+from rdkit import Chem
+
 from eMolFrag2.src.representation import Molecule
 from eMolFrag2.src.utilities import constants
 
@@ -15,7 +17,7 @@ class Linker(Molecule.Molecule):
                                                   prefix = constants.LINKER_PREFIX, \
                                                   numeric_suffix = suffix)
         
-    def toSDF():
+    def toSDF(self):
         """
             Assuming a molecule with AtomType and connectivity
             information preseversed, output the molecule in SDF format
@@ -23,26 +25,29 @@ class Linker(Molecule.Molecule):
 
             @output: string in SDF format
         """
-        clearProperties(self.rdkitObject)
+        self.clearProperties()
 
-        # Write to a string
-        from rdkit.six import StringIO
-        sio = StringIO()
-        writer = Chem.SDWriter(sio)
+        self.rdkitObject.SetProp('_Name', self.getFileName()) # set a title line
 
         # A linker maintains a "maximum number of connections for each fragment"
         # All atoms must have an atomtype; not all atoms have connections
-        appendix = '\n'.join(f'{str(len(atom.GetProp(ATOM_CONNECTION_PROP).split()) if atom.HasProp(ATOM_CONNECTION_PROP) else 0)} {atom.GetProp(ATOMTYPE_PROP)}'\
+        appendix = '\n'.join(f'{str(len(atom.GetProp(constants.ATOM_CONNECTION_PROP).split()) if atom.HasProp(constants.ATOM_CONNECTION_PROP) else 0)} {atom.GetProp(constants.ATOMTYPE_PROP)}'\
                              for atom in self.rdkitObject.GetAtoms())
 
-        self.rdkitObject.SetProp(SDF_OUTPUT_LINKER_CONNECTIONS, appendix)
+        self.rdkitObject.SetProp(constants.SDF_OUTPUT_LINKER_CONNECTIONS, appendix)
 
         # TODO: name fragments
         #similar_appendix = '\n'.join(sim_mol.getName() for sim_mol in self.similar)
         #self.rdkitObject.SetProp(SDF_OUTPUT_SIMILAR_FRAGMENTS, similar_appendix)
 
+        # Write to a string
+        from rdkit.six import StringIO
+        sio = StringIO()
+        writer = Chem.SDWriter(sio)
         writer.write(self.rdkitObject)
         writer.close()
+
+        print(sio.getvalue())
 
         return sio.getvalue()
     

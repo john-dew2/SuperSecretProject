@@ -60,6 +60,5 @@ if __name__ == '__main__':
   if ARGS.i == None or ARGS.o == None:
       logging.logger.error(0, f"Every command must include '-i' and '-o'")
       logging.logger.error(f'eMolFrag will not execute.')
-      return
-
-  main()
+  else:
+      main()

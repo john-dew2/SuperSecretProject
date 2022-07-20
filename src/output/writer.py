@@ -36,13 +36,12 @@ def writeSingleFile(indicator, name, out_dir, mols, extension = constants.SDF_FO
     logging.logger.debug(f'Writing file {file_name}')
 
     # Delimiter needed? Or does SDWriter put it there?
-    text = constants.SDF_MOLECULE_DELIMITER.join([mol.toSDF() for mol in mols])
+    text = '\n'.join([mol.toSDF() for mol in mols])
 
     out_path = out_dir / file_name
 
     out_path.touch()
     out_path.open('w').write(text)
-    out_path.close()
 
 def writeIndividualFiles(out_dir, mols, extension = constants.SDF_FORMAT_EXT):
     """
@@ -55,7 +54,6 @@ def writeIndividualFiles(out_dir, mols, extension = constants.SDF_FORMAT_EXT):
         out_path = out_dir / mol.getFileName()
         out_path.touch() # Needed?
         out_path.open('w').write(mol.toSDF())
-        out_path.close()
 
 def write(options, brick_db, linker_db):
     """
@@ -76,7 +74,7 @@ def write(options, brick_db, linker_db):
     if options.UNIQUE:
         indicator = constants.FILE_OUTPUT_UNIQUE_INDICATOR
         bricks_to_write = brick_db.GetUniqueMolecules()
-        linkers_to_write = linkers_db.GetUniqueMolecules()
+        linkers_to_write = linker_db.GetUniqueMolecules()
 
     # All fragments wanted
     else:
@@ -90,5 +88,5 @@ def write(options, brick_db, linker_db):
 
     # Write all fragments to a single brick and a signle linker file
     else:
-        writeSingleFile(indicator, BRICK_SINGLE_FILE_OUTPUT_NAME, out_dir, bricks_to_write)
-        writeSingleFile(indicator, LINKER_SINGLE_FILE_OUTPUT_NAME, out_dir, linkers_to_write)
+        writeSingleFile(indicator, constants.BRICK_SINGLE_FILE_OUTPUT_NAME, out_dir, bricks_to_write)
+        writeSingleFile(indicator, constants.LINKER_SINGLE_FILE_OUTPUT_NAME, out_dir, linkers_to_write)
