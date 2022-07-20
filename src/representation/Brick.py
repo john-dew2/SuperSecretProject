@@ -11,9 +11,9 @@ class Brick(Molecule.Molecule):
         """
         Molecule.Molecule.__init__(self, rdkit_mol, parentMol = parent)
 
-        self.file_name = self.makeFragmentFileName(parent.getFileName(), \
-                                                   prefix = constants.BRICK_PREFIX, \
-                                                   numeric_suffix = suffix)
+        self.filename = self.makeFragmentFileName(parent.getFileName(), \
+                                                  prefix = constants.BRICK_PREFIX, \
+                                                  numeric_suffix = suffix)
         
     def toSDF():
         """
