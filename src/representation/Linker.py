@@ -27,8 +27,6 @@ class Linker(Molecule.Molecule):
         """
         self.clearProperties()
 
-        self.rdkitObject.SetProp('_Name', self.getFileName()) # set a title line
-
         # A linker maintains a "maximum number of connections for each fragment"
         # All atoms must have an atomtype; not all atoms have connections
         appendix = '\n'.join(f'{str(len(atom.GetProp(constants.ATOM_CONNECTION_PROP).split()) if atom.HasProp(constants.ATOM_CONNECTION_PROP) else 0)} {atom.GetProp(constants.ATOMTYPE_PROP)}'\
@@ -36,17 +34,5 @@ class Linker(Molecule.Molecule):
 
         self.rdkitObject.SetProp(constants.SDF_OUTPUT_LINKER_CONNECTIONS, appendix)
 
-        #similar_appendix = '\n'.join(sim_mol.getName() for sim_mol in self.similar)
-        #self.rdkitObject.SetProp(SDF_OUTPUT_SIMILAR_FRAGMENTS, similar_appendix)
-
-        # Write to a string
-        from rdkit.six import StringIO
-        sio = StringIO()
-        writer = Chem.SDWriter(sio)
-        writer.write(self.rdkitObject)
-        writer.close()
-
-        print(sio.getvalue())
-
-        return sio.getvalue()
+        return self._toSDF()
     

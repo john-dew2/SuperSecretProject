@@ -60,7 +60,7 @@ class MoleculeDatabase(Molecule):
         return [mol for mol in molecules if self.add(mol)]
     
     def GetUniqueMolecules(self):
-        return self.database.keys()
+        return list(self.database.keys())
 
     #
     # Return all Molecule objects stored
@@ -72,6 +72,8 @@ class MoleculeDatabase(Molecule):
             all_mols += tc_mols
 
         return all_mols
+    
+        #return [mol, *tc_mols for mol, tc_mols in self.database.items()]
     
     def numUnique(self):
         return len(self.database.keys())

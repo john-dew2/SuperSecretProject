@@ -70,17 +70,17 @@ def write(options, brick_db, linker_db):
     linkers_to_write = []
     indicator = ''
 
-    # Only unique fragments wanted
-    if options.UNIQUE:
-        indicator = constants.FILE_OUTPUT_UNIQUE_INDICATOR
-        bricks_to_write = brick_db.GetUniqueMolecules()
-        linkers_to_write = linker_db.GetUniqueMolecules()
-
     # All fragments wanted
-    else:
+    if options.ALL_FRAGMENTS:
         indicator = constants.FILE_OUTPUT_ALL_INDICATOR
         bricks_to_write = brick_db.GetAllMolecules()
         linkers_to_write = linker_db.GetAllMolecules()
+        
+    # Only unique fragments wanted
+    else:
+        indicator = constants.FILE_OUTPUT_UNIQUE_INDICATOR
+        bricks_to_write = brick_db.GetUniqueMolecules()
+        linkers_to_write = linker_db.GetUniqueMolecules()
 
     # Write all fragments to their own files
     if options.INDIVIDUAL:
