@@ -1,11 +1,12 @@
+
 import sys
+from eMolFrag2.src.representation import Molecule
 from pathlib import Path
 from rdkit import Chem
-
 from eMolFrag2.src.input import AcquireFiles, AcquireMolecules, Configuration, Options
-from eMolFrag2.src.representation import Molecule
-from eMolFrag2.src.chopper import Chopper
+from eMolFrag2.unittests import utilities
 from eMolFrag2.src.utilities import logging
+from eMolFrag2.src.chopper import Chopper
 from eMolFrag2.src.output import writer
 
 def main():
@@ -28,8 +29,8 @@ def main():
     brick_db, linker_db = Chopper.chopall(molecules)
     
     # Output fragments
-    logging.logger.info(f'{brick_db.numUnique()} unique bricks among {brick_db.numAllMolecules()} total bricks')
-    logging.logger.info(f'{linker_db.numUnique()} unique linkers among {linker_db.numAllMolecules()} total linkers')
+    logging.logger.info(f'{brick_db.numUnique()} unique bricks among {brick_db.numAllMolecules()} bricks')
+    logging.logger.info(f'{linker_db.numUnique()} unique linkers among {linker_db.numAllMolecules()} linkers')
 
     writer.write(initializer, brick_db, linker_db)
 
@@ -47,7 +48,7 @@ if __name__ == '__main__':
                       type = str,
                       help = 'Set the output path')
   
-  parser.add_argument("-u",
+  parser.add_argument("-all",
                       action='store_true',
                       help = 'Set the execution type')
   
@@ -61,4 +62,4 @@ if __name__ == '__main__':
       logging.logger.error(0, f"Every command must include '-i' and '-o'")
       logging.logger.error(f'eMolFrag will not execute.')
   else:
-      main()
+    main()

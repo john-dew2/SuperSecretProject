@@ -1,7 +1,9 @@
 import sys
 from pathlib import Path
 from eMolFrag2.unittests import utilities
-from eMolFrag2.src.input import Options, Configuration
+from eMolFrag2.src.utilities import logging
+#from ..src.input import Configuration, Options
+from eMolFrag2.src.input import Configuration, Options
 
 usr_dir = Path.cwd()
 config_files = usr_dir.joinpath("eMolFrag2/unittests/data/config-files")
@@ -23,24 +25,24 @@ def runReadCommandLine(arguments, expec_result):
 
 def runReadCommandLineTests():
     #Normal
-    runReadCommandLine(f"-i {mol2} -o output/ -c 1".split(" "), True)
+    runReadCommandLine(f"-i {mol2} -o output/".split(" "), True)
     
     #Empty
     runReadCommandLine(None, False)
+
      
 def runReadConfigurationFile(config_file, expec_result):
   assert Configuration.readConfigurationFile(config_file) == expec_result
 
 def runReadConfigurationFileTests():
     #Files with a comment
-    runReadConfigurationFile(config_files.joinpath("comment1.txt"), ['-i', '/content/eMolFragTEMP/test/mol2-test', '-o', 'output/', '-c', '1'])
-    runReadConfigurationFile(config_files.joinpath("comment2.txt"), ['-i', '/content/eMolFragTEMP/test/mol2-test', '-o', 'output/', '-c', '1'])
-    #runReadConfigurationFile(config_files.joinpath("comment3.txt"), ['-i', '/content/eMolFragTEMP/test/mol2-test', '-o', 'output/', '-c', '1'])
+    runReadConfigurationFile(config_files.joinpath("comment1.txt"), ['-i', '/content/eMolFrag2/unittests/data/db-files', '-o', 'output/', '-u', '-indiv'])
+    runReadConfigurationFile(config_files.joinpath("comment2.txt"), ['-i', '/content/eMolFrag2/unittests/data/db-files', '-o', 'output/', '-u', '-indiv'])
+    #runReadConfigurationFile(config_files.joinpath("comment3.txt"), ['-i', '/content/eMolFrag2/unittests/data/db-files', '-o', 'output/', '-u', '-indiv\n'])
     runReadConfigurationFile(config_files.joinpath("comment4.txt"), [''])
-
     #Normal Files
-    runReadConfigurationFile(config_files.joinpath("normal1.txt"),  ['-i', '/content/eMolFragTEMP/test/mol2-test', '-o', 'output/', '-c', '1'])
-    runReadConfigurationFile(config_files.joinpath("normal2.txt"),  ['-i', '/content/eMolFragTEMP/test/mol2-test', '-o', 'output/', '-c', '0'])
+    runReadConfigurationFile(config_files.joinpath("normal1.txt"),  ['-i', '/content/eMolFrag2/unittests/data/db-files', '-o', 'output/', '-u', '-indiv'])
+    runReadConfigurationFile(config_files.joinpath("normal2.txt"),  ['-i', '/content/eMolFrag2/unittests/data/db-files', '-o', 'output/'])
 
     #Empty File
     runReadConfigurationFile(config_files.joinpath("empty1.txt"), [])
@@ -57,14 +59,12 @@ def runReadConfigurationInput(arguments, expec_result):
 
 def runReadConfigurationInputTests():
     #Normal processing
-    runReadConfigurationInput(f"-i {mol2} -o output/ -c 1".split(" "), True)
+    runReadConfigurationInput(f"-i {mol2} -o output/".split(" "), True)
     runReadConfigurationInput(f"-i {smi} -o output/".split(" "), True)
-    
     #No input or output
-    runReadConfigurationInput(f"-o output/ -c 1".split(" "), False)
-    runReadConfigurationInput(f"-i {smi} -c 1".split(" "), False)
-    runReadConfigurationInput(f"-c 1".split(" "), False)
-    
+    runReadConfigurationInput(f"-o output/".split(" "), False)
+    runReadConfigurationInput(f"-i {smi}".split(" "), False)
+    runReadConfigurationInput(f"-indiv".split(" "), False)
     #Not enough arguments 
     #runReadConfigurationInput(f"".split(" "), False)
     
@@ -99,7 +99,7 @@ def runtest(test_name, test_func, successful, failed):
 
 def runtests():
     printlevel = 1
-    utilities.emit(printlevel, f"Executing {__name__} unit tests.")
+    logging.logger.info(f"Executing {__name__} unit tests.")
     
     #
     # Define all tests as a Dictionary: {str-name, <function-to-execute>}
@@ -118,11 +118,11 @@ def runtests():
     # Report
     #
     if not failed:        
-        utilities.emit(printlevel, f'{__name__} unit tests are successful.')
+        logging.logger.info(f'{__name__} unit tests are successful.')
 
     else:
         for test in failed:
-            utilities.emit(printlevel+1, f'Failed {test}.')
+            logging.logger.error(f'Failed {test}.')
 
 if __name__ == "__main__":
     runtests()

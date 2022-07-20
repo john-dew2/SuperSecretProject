@@ -1,5 +1,7 @@
+
 #Options.py
-from eMolFrag2.unittests import utilities
+from eMolFrag2.src.utilities import logging
+from eMolFrag2.src.utilities import logging
 
 
 #input_path

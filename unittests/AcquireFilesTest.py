@@ -1,7 +1,9 @@
+
 import sys
 from pathlib import Path
 from eMolFrag2.unittests import utilities
 from eMolFrag2.src.input import AcquireFiles, Configuration, Options
+from eMolFrag2.src.utilities import logging
 
 usr_dir = Path.cwd()
 dataPath = usr_dir.joinpath("eMolFrag2/unittests/data/db-files")
@@ -38,13 +40,6 @@ def runAcquireConfigurationFile(org_file, expec):
     processed_file = AcquireFiles.acquireConfigurationFile(org_file)
     assert processed_file == expec
 
- 
-
-
-
-
-
-
 #
 #
 # Unit test initiation functionality
@@ -68,7 +63,7 @@ def runtest(test_name, test_func, successful, failed):
 
 def runtests():
     printlevel = 1
-    utilities.emit(printlevel, f"Executing {__name__} unit tests.")
+    logging.logger.info(f"Executing {__name__} unit tests.")
     
     #
     # Define all tests as a Dictionary: {str-name, <function-to-execute>}
@@ -87,11 +82,11 @@ def runtests():
     # Report
     #
     if not failed:        
-        utilities.emit(printlevel, f'{__name__} unit tests are successful.')
+        logging.logger.info(f'{__name__} unit tests are successful.')
 
     else:
         for test in failed:
-            utilities.emit(printlevel+1, f'Failed {test}.')
+            logging.logger.error(f'Failed {test}.')
 
 if __name__ == "__main__":
     runtests()
