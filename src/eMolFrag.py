@@ -8,6 +8,16 @@ from eMolFrag2.src.chopper import Chopper
 from eMolFrag2.src.utilities import logging
 from eMolFrag2.src.output import writer
 
+
+import sys
+from eMolFragTEMP.src.representation import Molecule
+from pathlib import Path
+from rdkit import Chem
+from eMolFragTEMP.src.input import AcquireFiles, AcquireMolecules, Configuration, Options
+from eMolFragTEMP.unittests import utilities
+from eMolFragTEMP.src.utilities import logging
+from eMolFragTEMP.src.chopper import Chopper
+
 def main():
     dataset = []
     
@@ -48,11 +58,11 @@ if __name__ == '__main__':
                       help = 'Set the output path')
   
   parser.add_argument("-u",
-                      type=int, choices = [1, 0],
+                      action='store_true',
                       help = 'Set the execution type')
   
   parser.add_argument("-indiv",
-                      type = int, choices = [1, 0],
+                      action='store_true',
                       help = 'Set the format of the output as being all fragments in their own files')
   
   ARGS = parser.parse_args()
@@ -60,6 +70,5 @@ if __name__ == '__main__':
   if ARGS.i == None or ARGS.o == None:
       logging.logger.error(0, f"Every command must include '-i' and '-o'")
       logging.logger.error(f'eMolFrag will not execute.')
-      return
-
-  main()
+  else:
+    main()
