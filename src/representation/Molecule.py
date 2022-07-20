@@ -48,6 +48,7 @@ class Molecule:
         """
         properties = self.rdkitObject.GetPropNames()
         properties.append(constants.ATOMTYPE_PROP) # Remove an errant property
+        properties.append(constants.ATOMTYPE_CHARGE_PROP) # Remove an errant property
         for property in properties:
             self.rdkitObject.ClearProp(property)
 

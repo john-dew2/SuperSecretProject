@@ -8,16 +8,6 @@ from eMolFrag2.src.chopper import Chopper
 from eMolFrag2.src.utilities import logging
 from eMolFrag2.src.output import writer
 
-
-import sys
-from eMolFragTEMP.src.representation import Molecule
-from pathlib import Path
-from rdkit import Chem
-from eMolFragTEMP.src.input import AcquireFiles, AcquireMolecules, Configuration, Options
-from eMolFragTEMP.unittests import utilities
-from eMolFragTEMP.src.utilities import logging
-from eMolFragTEMP.src.chopper import Chopper
-
 def main():
     dataset = []
     
@@ -71,4 +61,4 @@ if __name__ == '__main__':
       logging.logger.error(0, f"Every command must include '-i' and '-o'")
       logging.logger.error(f'eMolFrag will not execute.')
   else:
-    main()
+      main()
