@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from rdkit import Chem
+from rdkit import RDLogger
 
 from eMolFrag2.src.representation import Molecule
 from eMolFrag2.src.utilities import constants
@@ -18,9 +19,13 @@ def fileToString(file):
     with open(file) as f:
         contents = f.read()
     f.close()
-        
+
+    # if file.suffix == '.mol2':
+    #     return readMol2File(file, contents)
+
     return contents
-   
+
+
 def convertToRDkit(contents, extension):
     """
         Attempt to read and convert the input file into an RdKit.Mol object
@@ -37,7 +42,8 @@ def convertToRDkit(contents, extension):
         return Chem.MolFromHELM(contents) 
 
     if (extension == constants.MOL2_FORMAT_EXT):
-        return Chem.MolFromMol2Block(contents)#, False)
+        # return Chem.MolFromMol2Block(contents)
+        return readMol2File(contents)
 
     if (extension == constants.MOL_FORMAT_EXT):
         return Chem.MolFromMolBlock(contents)
@@ -55,7 +61,36 @@ def convertToRDkit(contents, extension):
         return Chem.MolFromTPLBlock(contents)
 
     return None
-    
+
+def readMol2File(contents):
+    # Turn off rdkit error messages 
+    RDLogger.DisableLog('rdApp.*')
+
+    try: 
+        return Chem.MolFromMol2Block(contents)
+    except:
+        pass
+    try: 
+         return Chem.MolFromMol2Block(contents, kekulize = False)
+    except:
+        pass
+    try: 
+         return Chem.MolFromMol2Block(contents, kekulize = False, sanitize = False)
+    except:
+        pass
+    try: 
+         return Chem.MolFromMol2Block(contents, sanitize = False)
+    except:
+        pass
+    try: 
+        return Chem.MolFromMol2Block(contents, sanitize = False, removeHs = False)
+    except: 
+        pass
+    try: 
+        return Chem.MolFromMol2Block(contents, sanitize = False, removeHs = False, cleanupSubstructures = False)
+    except: 
+        pass
+
 def getMolecules(files):
     """
         From the set of input files, acquire the corresponding Rdkit molecules.
