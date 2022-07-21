@@ -4,6 +4,9 @@
 
 from rdkit import Chem
 from pathlib import Path
+import argparse
+from eMolFrag2.src.utilities import constants
+from eMolFrag2.src.input import Options
 
 #takes the contents of a file and puts it in a string for processing
 def fileToString(file):
@@ -62,31 +65,33 @@ def getRDKitMolecule(path, extension):
     content = fileToString(path)
     return convertToRDkit(content, extension)
     
-def createParser(arguments):
-  if arguments == None:
-    return None
+def createParser():
+  parser = argparse.ArgumentParser(description = 'eMolFrag2')
+  #
+  # eMolFrag arguments
+  #
+  parser.add_argument('-' + Options.INPUT_ARG,
+                      type = str,
+                      help = 'Input path to molecules to fragment')
+  parser.add_argument('-' + Options.OUTPUT_ARG,
+                      type = str,
+                      help = 'Output path for fragments (existing files will be overwritten.)')
 
-  from argparse import ArgumentParser
-  parser = ArgumentParser(description='eMolFrag2')
-  parser.add_argument("-i",
-  type=str,
-  help='Set the input path')
-  
-  parser.add_argument("-o",
-  type=str,
-  help='Set the output path')
-  
-  parser.add_argument("-m",
-  type=int, choices=range(0,3),
-  help='Set the execution type')
-  
-  parser.add_argument("-c",
-  type=int, choices=range(0,3),
-  help='Set the output type')
+  parser.add_argument('-' + Options.CONFIGURATION_FILE_ARG,
+                      type = str,
+                      help = 'Configuration file: .emf extension required.)')
 
-  args = parser.parse_args(arguments)
+  parser.add_argument('-' + Options.ALL_FRAGMENTS_ARG,
+                      action = 'store_true',
+                      default = False,
+                      help = 'Output all fragments (all non-unique molecules)')
+
+  parser.add_argument('-' + Options.INDIVIDUAL_FILE_ARG,
+                      action = 'store_true',
+                      default = False,
+                      help = 'Fragment will be output in their own individual files')
   
-  return args
+  return parser
   
 #
 #
