@@ -1,28 +1,38 @@
-
 import sys
-from eMolFrag2.src.representation import Molecule
 from pathlib import Path
-from rdkit import Chem
-from eMolFrag2.src.input import AcquireFiles, AcquireMolecules, Configuration, Options
-from eMolFrag2.unittests import utilities
-from eMolFrag2.src.utilities import logging
+
+from eMolFrag2.src.input import MoleculeFileReader, MoleculeReader, Options
 from eMolFrag2.src.chopper import Chopper
+from eMolFrag2.src.representation import Molecule
 from eMolFrag2.src.output import writer
+from eMolFrag2.src.utilities import logging
 
 def main():
+    """
+        eMolFrag
+
+        (1) Parse input arguments
+        (2) Read input files into Molecule objects
+        (3) Fragment molecules
+        (4) Output fragments as specified by the user
+
+    """
+    options = Options.Options()
+    if not options.isRunnable():
+        logging.logger.error(f'Command-line arguments failed to parse; execution of eMolFrag will s.')
+        return
+
     dataset = []
     
-	#Verify Tools and Parse Command Line
-    #args = sys.argv
-    initializer = Options.Options()
-    initializer = Configuration.readConfigurationInput(initializer, ARGS)
+  	# Verify Tools and Parse Command Line
+    #initializer = Configuration.readConfigurationInput(initializer, ARGS)
 
     # Get files
-    files = AcquireFiles.acquireMoleculeFiles(initializer)    
-    logging.logger.info(f'{len(files)} files to be processed.')
+    mol_files = MoleculeFileReader.getFiles(options)
+    logging.logger.info(f'{len(mol_files)} files to be processed.')
     
     # Get molecules
-    molecules = AcquireMolecules.acquireMolecules(files)
+    molecules = MoleculeReader.getMolecules(mol_files)
     logging.logger.info(f'{len(molecules)} molecules to be chopped.')
  
     # CHOP
@@ -32,34 +42,8 @@ def main():
     logging.logger.info(f'{brick_db.numUnique()} unique bricks among {brick_db.numAllMolecules()} bricks')
     logging.logger.info(f'{linker_db.numUnique()} unique linkers among {linker_db.numAllMolecules()} linkers')
 
-    writer.write(initializer, brick_db, linker_db)
+    writer.write(options, brick_db, linker_db)
+
 
 if __name__ == '__main__':
-
-  from argparse import ArgumentParser
-  import argparse
-
-  parser = ArgumentParser(description = 'eMolFrag2')
-  parser.add_argument("-i",
-                      type = str,
-                      help = 'Set the input path')
-  
-  parser.add_argument("-o",
-                      type = str,
-                      help = 'Set the output path')
-  
-  parser.add_argument("-all",
-                      action='store_true',
-                      help = 'Set the execution type')
-  
-  parser.add_argument("-indiv",
-                      action='store_true',
-                      help = 'Set the format of the output as being all fragments in their own files')
-  
-  ARGS = parser.parse_args()
-  
-  if ARGS.i == None or ARGS.o == None:
-      logging.logger.error(0, f"Every command must include '-i' and '-o'")
-      logging.logger.error(f'eMolFrag will not execute.')
-  else:
     main()

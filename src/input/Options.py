@@ -1,74 +1,114 @@
+import argparse
 
-#Options.py
 from eMolFrag2.src.utilities import logging
-from eMolFrag2.src.utilities import logging
 
+#
+# Arg     Explanation
+# ---     ---------------------------------------
+# -i      input folder path
+# -o      output folder path
+# -u      output only TC-unique fragments
+# -indiv  output all fragments in indivudal files
+# -c      parameters specified in a configuration file 
+#
 
-#input_path
-#output_path
-#parallel_cores_used
-#outut_type:
-    # if 0 then full_process
-    # if 1 then chop_only
-    # if 2 then chop_and_remove
-#output_format:
-    #if 0 then traditional_format
-    #if 1 then different_files and remove_log_files
-    #if 2 then different_files and !remove_log_files
-    
+INPUT_ARG = 'i'
+OUTPUT_ARG = 'o'
+CONFIGURATION_FILE_ARG = 'c'
+ALL_FRAGMENTS_ARG = 'all'
+INDIVIDUAL_FILE_ARG = 'indiv'
+
 class Options:
     def __init__(self):
-        self.INPUT_PATH = ""
-        self.OUTPUT_PATH = ""
+        self.INPUT_PATH = None
+        self.OUTPUT_PATH = None
         
         self.INDIVIDUAL = False
-        self.ALL = True
+        self.ALL_FRAGMENTS = False
         
-        self.UNIQUE = False
-        self.REDUNDANT = True
+        arg_env = self._parseCommandLineArgs()
         
+        self._interpretArgs(arg_env)
 
-    #
-    # Prints the current preferences for each option available
-    #
-    def printOptions(self):
-        logging.logger.info(f"\nInput Path:  {self.INPUT_PATH}\nOutput Path: {self.OUTPUT_PATH}\nOutput Format:\n    Individual Files:  {self.INDIVIDUAL}\n    All Files:         {self.ALL}\nExecution Type:\n    Remove Redundacy:  {self.UNIQUE}\n    No Removal:        {self.REDUNDANT}")
-    #
-    # Given an options preference, function sets an option to its correct value
-    #
-    def setOption(self, argType, option):
-    
-        if (argType == "-i"):   
-            self.INPUT_PATH = option
+    def isRunnable(self):
+        """
+            After parsing the input command-line or configuration file,
+            do we have the minimum requirements to execute?
             
-        elif (argType == "-o"):
-            self.OUTPUT_PATH = option
-            
-        elif (argType == "-u"):
-            self.INDIVIDUAL = option
-            self.ALL = not(option)
-        
-        elif (argType == "-indiv"):
-            self.UNIQUE = option
-            self.REDUNDANT = not(option)
-        else:
-            logging.logger.error(f"{argType} does not exist")
+            Requirements:
+              (1) input directory
+              (2) output directory
+        """
+        return self.INPUT_PATH is not None or self.OUTPUT_PATH is not None
 
-    def setOptions(self, args):
-      try:
-        self.setOption("-i", args.i)
-      except:
-        pass
-      try:
-        self.setOption("-o", args.o)
-      except:
-        pass
-      try:
-        self.setOption("-u", args.u)
-      except:
-        pass
-      try:
-        self.setOption("-indiv", args.indiv)
-      except:
-       pass
-      #self.printOptions()
+    def _parseCommandLineArgs(self):
+        """
+            Analyze the command-line arguments.
+            If a configuration file is specified, parse it.
+            
+            @output: argument environment created by argparse
+        """
+        parser = argparse.ArgumentParser(description = 'eMolFrag2')
+
+        #
+        # eMolFrag arguments
+        #
+        parser.add_argument('-' + INPUT_ARG,
+                            type = str,
+                            help = 'Input path to molecules to fragment')
+  
+        parser.add_argument('-' + OUTPUT_ARG,
+                            type = str,
+                            help = 'Output path for fragments (existing files will be overwritten.)')
+
+        parser.add_argument('-' + CONFIGURATION_FILE_ARG,
+                            type = str,
+                            help = 'Configuration file: .emf extension required.)')
+
+        parser.add_argument('-' + ALL_FRAGMENTS_ARG,
+                            action = 'store_true',
+                            default = self.INDIVIDUAL,
+                            help = 'Output all fragments (all non-unique molecules)')
+  
+        parser.add_argument('-' + INDIVIDUAL_FILE_ARG,
+                            action = 'store_true',
+                            default = self.ALL_FRAGMENTS,
+                            help = 'Fragment will be output in their own individual files')
+  
+        args = parser.parse_args()
+
+        # Configuration file used for execution
+        if args.c is not None:
+
+            # Did the user state more than "eMolFrag2 -c *.emf"?
+            if len(sys.argv) > 3:
+                logging.logger.warning(f'Configuration file specified. All other command-line arguments ignored.')
+   
+            # TODO: Read config file
+            return
+ 
+        return args
+
+    def _interpretArgs(self, arg_env):
+        """
+            Set the user-defined options
+        """
+        for arg in vars(arg_env):
+
+            if (arg == INPUT_ARG):
+                self.INPUT_PATH = getattr(arg_env, arg)
+
+            elif (arg == OUTPUT_ARG):
+                self.OUTPUT_PATH = getattr(arg_env, arg)
+            
+            elif (arg == ALL_FRAGMENTS_ARG):
+                self.ALL_FRAGMENTS = getattr(arg_env, arg)
+
+            elif (arg == INDIVIDUAL_FILE_ARG):
+                self.INDIVIDUAL = getattr(arg_env, arg)
+        
+    def __str__(self):
+        """
+            Report the current preferences for each option available
+        """
+        return f'Input Path: {self.INPUT_PATH}\nOutput Path: {self.OUTPUT_PATH}\nIndividual output files: {self.INDIVIDUAL}\nAll Fragments: {self.ALL_FRAGMENTS}'
