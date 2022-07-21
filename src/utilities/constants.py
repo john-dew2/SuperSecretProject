@@ -13,6 +13,7 @@ PDB_FORMAT_EXT = ".pdb"
 SMARTS_FORMAT_EXT = ".sma"
 SMILES_FORMAT_EXT = ".smi"
 TPL_FORMAT_EXT = ".tpl"
+EMF_FORMAT_EXT = ".emf"
 
 ACCEPTED_FORMATS = [FASTA_FORMAT_EXT,\
                     YAML_FORMAT_EXT,\

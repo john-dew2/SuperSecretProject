@@ -25,7 +25,6 @@ def main():
     dataset = []
     
   	# Verify Tools and Parse Command Line
-    #initializer = Configuration.readConfigurationInput(initializer, ARGS)
 
     # Get files
     mol_files = MoleculeFileReader.getFiles(options)

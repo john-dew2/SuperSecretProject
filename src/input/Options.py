@@ -1,6 +1,8 @@
 import argparse
+import sys
 
 from eMolFrag2.src.utilities import logging
+from eMolFrag2.src.input import ConfigReader
 
 #
 # Arg     Explanation
@@ -22,11 +24,14 @@ class Options:
     def __init__(self):
         self.INPUT_PATH = None
         self.OUTPUT_PATH = None
+        self.CONFIGURATION_FILE = None
         
         self.INDIVIDUAL = False
         self.ALL_FRAGMENTS = False
         
         arg_env = self._parseCommandLineArgs()
+        if arg_env is None:
+          return
         
         self._interpretArgs(arg_env)
 
@@ -85,7 +90,7 @@ class Options:
                 logging.logger.warning(f'Configuration file specified. All other command-line arguments ignored.')
    
             # TODO: Read config file
-            return
+            args = ConfigReader.readConfig(args.c, parser)
  
         return args
 
@@ -100,6 +105,9 @@ class Options:
 
             elif (arg == OUTPUT_ARG):
                 self.OUTPUT_PATH = getattr(arg_env, arg)
+
+            elif (arg == CONFIGURATION_FILE_ARG):
+                self.CONFIGURATION_FILE = getattr(arg_env, arg)
             
             elif (arg == ALL_FRAGMENTS_ARG):
                 self.ALL_FRAGMENTS = getattr(arg_env, arg)
