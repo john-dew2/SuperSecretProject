@@ -3,10 +3,10 @@ from pathlib import Path
 from rdkit import Chem
 from rdkit import RDLogger
 
-from eMolFrag2.src.representation import Molecule
-from eMolFrag2.src.utilities import constants
-from eMolFrag2.unittests import utilities
-from eMolFrag2.src.utilities import logging
+from SuperSecretProject.src.representation import Molecule
+from SuperSecretProject.src.utilities import constants
+from SuperSecretProject.unittests import utilities
+from SuperSecretProject.src.utilities import logging
 
 # TODO: move to utilities
 def fileToString(file):

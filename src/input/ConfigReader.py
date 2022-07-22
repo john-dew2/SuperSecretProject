@@ -1,5 +1,5 @@
 
-from eMolFrag2.src.utilities import logging, constants
+from SuperSecretProject.src.utilities import logging, constants
 from pathlib import Path
 
 def cleanCommandList(cmdList):
