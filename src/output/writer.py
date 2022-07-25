@@ -49,8 +49,8 @@ def writeSingleFile(indicator, name, out_dir, mols, extension = constants.SDF_FO
 
     out_path = out_dir / file_name
 
-    out_path.touch()
-    out_path.open('w').write(text)
+    with out_path.open('w') as f:
+            f.write(text)
 
 def writeIndividualFiles(out_dir, mols, extension = constants.SDF_FORMAT_EXT):
     """
@@ -61,8 +61,8 @@ def writeIndividualFiles(out_dir, mols, extension = constants.SDF_FORMAT_EXT):
     """
     for mol in mols:    
         out_path = out_dir / mol.getFileName()
-        out_path.touch() # Needed?
-        out_path.open('w').write(mol.toSDF())
+        with out_path.open('w') as f:
+            f.write(mol.toSDF())
 
 def write(options, brick_db, linker_db):
     """
