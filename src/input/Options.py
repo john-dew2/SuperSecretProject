@@ -60,11 +60,13 @@ class Options:
         #
         parser.add_argument('-' + INPUT_ARG,
                             type = str,
-                            help = 'Input path to molecules to fragment')
+                            help = 'Input path to molecules to fragment', 
+                            required=True)
   
         parser.add_argument('-' + OUTPUT_ARG,
                             type = str,
-                            help = 'Output path for fragments (existing files will be overwritten.)')
+                            help = 'Output path for fragments (existing files will be overwritten.)', 
+                            required=True)
 
         parser.add_argument('-' + CONFIGURATION_FILE_ARG,
                             type = str,
