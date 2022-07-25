@@ -81,8 +81,13 @@ class Options:
                             action = 'store_true',
                             default = self.ALL_FRAGMENTS,
                             help = 'Fragment will be output in their own individual files')
-  
-        args = parser.parse_args()
+
+        try:
+            args = parser.parse_args()
+        except:
+            parser.print_help()
+            sys.exit(0)
+        
 
         # Configuration file used for execution
         if args.c is not None:
