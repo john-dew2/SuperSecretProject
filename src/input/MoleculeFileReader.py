@@ -14,6 +14,11 @@ def getFiles(options):
     if not folderPath.exists():
         logging.logger.error(f'Input path {options.INPUT_PATH} does not exist.')
         return []
+
+    # Path is not a directory
+    if not folderPath.is_dir():
+        logging.logger.error(f'Input path {options.INPUT_PATH} is not a directory. Did you mean: {folderPath.parent} ?')
+        return []
      
     files = []
     bad_files = []
