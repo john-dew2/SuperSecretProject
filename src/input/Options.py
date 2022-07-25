@@ -53,18 +53,28 @@ class Options:
             
             @output: argument environment created by argparse
         """
-        parser = argparse.ArgumentParser(description = 'eMolFrag2')
+
+        # Add full help message on incorrect parameters
+        class MyParser(argparse.ArgumentParser):
+            def error(self, message):
+                sys.stderr.write('error: %s\n' % message)
+                self.print_help()
+                sys.exit(2)
+
+        parser = MyParser(description="eMolFrag2")
 
         #
         # eMolFrag arguments
         #
         parser.add_argument('-' + INPUT_ARG,
                             type = str,
-                            help = 'Input path to molecules to fragment')
+                            help = 'Input path to molecules to fragment', 
+                            required=True)
   
         parser.add_argument('-' + OUTPUT_ARG,
                             type = str,
-                            help = 'Output path for fragments (existing files will be overwritten.)')
+                            help = 'Output path for fragments (existing files will be overwritten.)', 
+                            required=True)
 
         parser.add_argument('-' + CONFIGURATION_FILE_ARG,
                             type = str,
@@ -79,8 +89,8 @@ class Options:
                             action = 'store_true',
                             default = self.ALL_FRAGMENTS,
                             help = 'Fragment will be output in their own individual files')
-  
-        args = parser.parse_args()
+
+        args = parser.parse_args()        
 
         # Configuration file used for execution
         if args.c is not None:

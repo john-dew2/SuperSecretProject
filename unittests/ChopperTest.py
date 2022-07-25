@@ -1,7 +1,7 @@
 from pathlib import Path
 
 import utilities
-import Chopper
+from SuperSecretProject.src.chopper import Chopper
 
 
 def runisBrick(filepath, expec_result):

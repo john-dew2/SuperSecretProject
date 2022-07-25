@@ -1,11 +1,11 @@
 import sys
 from pathlib import Path
 
-from eMolFrag2.src.input import MoleculeFileReader, MoleculeReader, Options
-from eMolFrag2.src.chopper import Chopper
-from eMolFrag2.src.representation import Molecule
-from eMolFrag2.src.output import writer
-from eMolFrag2.src.utilities import logging
+from SuperSecretProject.src.input import MoleculeFileReader, MoleculeReader, Options
+from SuperSecretProject.src.chopper import Chopper
+from SuperSecretProject.src.representation import Molecule
+from SuperSecretProject.src.output import writer
+from SuperSecretProject.src.utilities import logging
 
 def main():
     """
@@ -19,7 +19,7 @@ def main():
     """
     options = Options.Options()
     if not options.isRunnable():
-        logging.logger.error(f'Command-line arguments failed to parse; execution of eMolFrag will s.')
+        logging.logger.error(f'Command-line arguments failed to parse; execution of eMolFrag will stop.')
         return
 
     dataset = []
