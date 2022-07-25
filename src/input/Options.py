@@ -53,7 +53,15 @@ class Options:
             
             @output: argument environment created by argparse
         """
-        parser = argparse.ArgumentParser(description = 'eMolFrag2')
+
+        # Add full help message on incorrect parameters
+        class MyParser(argparse.ArgumentParser):
+            def error(self, message):
+                sys.stderr.write('error: %s\n' % message)
+                self.print_help()
+                sys.exit(2)
+
+        parser = MyParser(description="eMolFrag2")
 
         #
         # eMolFrag arguments
@@ -82,12 +90,7 @@ class Options:
                             default = self.ALL_FRAGMENTS,
                             help = 'Fragment will be output in their own individual files')
 
-        try:
-            args = parser.parse_args()
-        except:
-            parser.print_help()
-            sys.exit(0)
-        
+        args = parser.parse_args()        
 
         # Configuration file used for execution
         if args.c is not None:
