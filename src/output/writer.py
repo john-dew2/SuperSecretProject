@@ -14,15 +14,24 @@ def prepareDirectory(out_path):
         logging.logger.error(f'Output path {str(out_path)} is a file, not a directory.')
         raise ValueError(f'Malformed output specification path {str(out_path)}')
 
-    # Delete the directory, if needed
-    if not out_path.exists():
-        logging.logger.info(f'Output path {str(out_path)} does not exist; will be created.')        
+    # Rename the directory, if needed    
+    new_path = out_path
+    i=1
+    while new_path.exists():
+        logging.logger.warning(f'Output path {str(new_path)} exists; {str(out_path)}-{i} will be used.')
+        new_path = out_path.parent / f"{out_path.name}-{i}"
+        i+=1
     else:
-        logging.logger.warning(f'Output path {str(out_path)} exists; all contents will be deleted.')
-        shutil.rmtree(out_path)
+        logging.logger.info(f'Output path {str(new_path)} does not exist; will be created.')
+
+    out_path = new_path
+    del new_path, i
     
-    # Recreate the diretory
+    # Create the diretory
     out_path.mkdir()
+
+    # Return new path
+    return out_path
 
 def writeSingleFile(indicator, name, out_dir, mols, extension = constants.SDF_FORMAT_EXT):
     """
@@ -33,7 +42,7 @@ def writeSingleFile(indicator, name, out_dir, mols, extension = constants.SDF_FO
     """
     file_name = f'{indicator}{name}{extension}'
 
-    logging.logger.debug(f'Writing file {file_name}')
+    logging.logger.debug(f'Writing file {out_dir}/{file_name}')
 
     # Delimiter needed? Or does SDWriter put it there?
     text = '\n'.join([mol.toSDF() for mol in mols])
@@ -62,7 +71,7 @@ def write(options, brick_db, linker_db):
         output it (many files OR a single file).
     """
     out_dir = Path(options.OUTPUT_PATH)
-    prepareDirectory(out_dir)
+    out_dir = prepareDirectory(out_dir)
 
     logging.logger.debug(f'Writing to directory {str(out_dir)}')
 
